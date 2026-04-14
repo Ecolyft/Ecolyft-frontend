@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ChevronRight, Mail, Lock, ShieldCheck } from 'lucide-react'
+import { ChevronRight, Mail, ShieldCheck } from 'lucide-react'
 
 export const ResetPassword: React.FC = () => {
     const [step, setStep] = useState(1)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Users, UserPlus, Shield, MoreVertical, Mail, Phone } from 'lucide-react'
+import { UserPlus, MoreVertical } from 'lucide-react'
 
 export const UserManagement: React.FC = () => {
     return (

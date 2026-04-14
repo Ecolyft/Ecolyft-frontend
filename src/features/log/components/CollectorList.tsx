@@ -1,6 +1,5 @@
 import React from 'react'
-import { ArrowLeft, Search, Filter, TrendingUp, AlertTriangle, ChevronRight } from 'lucide-react'
-import { Link } from '@tanstack/react-router'
+import { Search, Filter, TrendingUp, ChevronRight } from 'lucide-react'
 
 export const CollectorList: React.FC = () => {
     return (

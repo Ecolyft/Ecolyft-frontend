@@ -1,6 +1,5 @@
 import React from 'react'
-import { ArrowLeft, Search, Filter, ShoppingBag, ChevronRight, Phone, Mail } from 'lucide-react'
-import { Link } from '@tanstack/react-router'
+import { Search, ShoppingBag, Phone, Mail } from 'lucide-react'
 
 export const BuyerList: React.FC = () => {
     return (

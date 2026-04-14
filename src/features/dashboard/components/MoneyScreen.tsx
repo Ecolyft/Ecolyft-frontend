@@ -1,5 +1,5 @@
 import React from 'react'
-import { AlertTriangle, DollarSign, Clock, Recycle, Plus, ArrowDownToLine, ArrowUpFromLine, RefreshCw } from 'lucide-react'
+import { AlertTriangle, DollarSign, Clock, Recycle, ArrowDownToLine, ArrowUpFromLine, RefreshCw } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 
 const riskItems = [

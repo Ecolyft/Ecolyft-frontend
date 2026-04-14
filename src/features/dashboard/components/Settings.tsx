@@ -1,5 +1,5 @@
 import React from 'react'
-import { Settings as SettingsIcon, Package, Weight, Building2, Target, Plus, ChevronRight } from 'lucide-react'
+import { Package, Weight, Building2, Target, Plus, ChevronRight } from 'lucide-react'
 
 export const Settings: React.FC = () => {
     return (

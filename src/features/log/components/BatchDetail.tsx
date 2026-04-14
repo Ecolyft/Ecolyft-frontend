@@ -1,4 +1,10 @@
 import React from 'react'
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs))
+}
 import { ArrowLeft, Clock, MapPin, BadgeCheck, AlertCircle, TrendingDown, Package, Share2 } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 

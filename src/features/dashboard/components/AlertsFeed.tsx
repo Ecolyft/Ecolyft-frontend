@@ -1,5 +1,5 @@
 import React from 'react'
-import { AlertCircle, TrendingDown, Clock, UserMinus, ShieldAlert, ChevronRight } from 'lucide-react'
+import { TrendingDown, Clock, UserMinus, ShieldAlert, ChevronRight } from 'lucide-react'
 
 export const AlertsFeed: React.FC = () => {
     return (
