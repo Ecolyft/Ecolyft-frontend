@@ -1,14 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useRouterState } from '@tanstack/react-router'
 import {
-    LayoutDashboard,
-    ArrowDownToLine,
-    RefreshCw,
-    ArrowUpFromLine,
-    Users,
-    Layers,
-    BarChart2,
-    Settings,
     Bell,
     Menu,
     X,
@@ -21,14 +13,14 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const navItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', to: '/dashboard' },
-    { icon: ArrowDownToLine, label: 'Inbound', to: '/log-purchase' },
-    { icon: RefreshCw, label: 'Throughput', to: '/log-processing' },
-    { icon: ArrowUpFromLine, label: 'Outbound', to: '/log-sale' },
-    { icon: Users, label: 'Collectors', to: '/collectors' },
-    { icon: Layers, label: 'Batches', to: '/batches' },
-    { icon: BarChart2, label: 'Reports', to: '/reports' },
-    { icon: Settings, label: 'Settings', to: '/settings' },
+    { icon: '/Group 46.png', label: 'Dashboard', to: '/dashboard' },
+    { icon: '/Group 47.png', label: 'Inbound', to: '/log-purchase' },
+    { icon: '/Group 49.png', label: 'Throughput', to: '/log-processing' },
+    { icon: '/Group 48.png', label: 'Outbound', to: '/log-sale' },
+    { icon: '/Group 42.png', label: 'Collectors', to: '/collectors' },
+    { icon: '/Group 50.png', label: 'Batches', to: '/batches' },
+    { icon: '/Group 45.png', label: 'Reports', to: '/reports' },
+    { icon: '/Group 43.png', label: 'Settings', to: '/settings' },
 ]
 
 interface DashboardLayoutProps {
@@ -81,7 +73,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                 {/* Sidebar */}
                 <aside className={cn(
                     "fixed top-16 left-0 bottom-0 z-50 w-48 bg-white border-r border-slate-200 flex flex-col py-4 transition-transform duration-200",
-                    "lg:static lg:translate-x-0 lg:z-auto",
+                    "lg:sticky lg:top-16 lg:h-[calc(100vh-64px)] lg:translate-x-0 lg:z-auto",
                     sidebarOpen ? "translate-x-0" : "-translate-x-full"
                 )}>
                     <button
@@ -105,7 +97,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                                             : "text-slate-600 hover:bg-slate-50 hover:text-slate-800"
                                     )}
                                 >
-                                    <item.icon className={cn("w-4 h-4 flex-shrink-0", active ? "text-brand-blue" : "text-slate-400")} />
+                                    <img
+                                        src={item.icon}
+                                        alt={item.label}
+                                        className={cn("w-5 h-5 flex-shrink-0 object-contain", active ? "brightness-110 contrast-110 scale-110" : "opacity-100")}
+                                    />
                                     {item.label}
                                 </Link>
                             )
