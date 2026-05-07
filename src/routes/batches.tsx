@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router'
 import { DashboardLayout } from '../features/dashboard/components/DashboardLayout'
 
 import { BatchList } from '../features/log/components/BatchList'
@@ -8,9 +8,12 @@ export const Route = createFileRoute('/batches')({
 })
 
 function BatchesPage() {
+    const location = useLocation()
+    const isExact = location.pathname === '/batches'
+
     return (
         <DashboardLayout>
-            <BatchList />
+            {isExact ? <BatchList /> : <Outlet />}
         </DashboardLayout>
     )
 }

@@ -1,226 +1,170 @@
 import React from 'react'
-import { AlertTriangle, DollarSign, Clock, Recycle, ArrowDownToLine, ArrowUpFromLine, RefreshCw } from 'lucide-react'
+import { AlertTriangle } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 
-const riskItems = [
-    {
-        icon: AlertTriangle,
-        iconBg: 'bg-red-100',
-        iconColor: 'text-red-500',
-        borderColor: 'border-l-red-500',
-        title: 'High contamination',
-        desc: 'Batch ECO-8115-0842 • 18% waste',
-        amount: '-₦4,200',
-        amountLabel: 'OVERPAID',
-        amountColor: 'text-red-500',
-    },
-    {
-        icon: DollarSign,
-        iconBg: 'bg-yellow-100',
-        iconColor: 'text-yellow-600',
-        borderColor: 'border-l-yellow-500',
-        title: 'Price anomaly',
-        desc: 'Collector Emeka • PET 32% above avg',
-        amount: '-₦8,100',
-        amountLabel: 'AT RISK',
-        amountColor: 'text-yellow-600',
-    },
-    {
-        icon: Clock,
-        iconBg: 'bg-orange-100',
-        iconColor: 'text-orange-500',
-        borderColor: 'border-l-orange-400',
-        title: 'Unsold batch',
-        desc: 'Batch ECO-8198-0831 • 7 days idle',
-        amount: '₦12,000',
-        amountLabel: 'TIED UP',
-        amountColor: 'text-orange-500',
-    },
-    {
-        icon: Recycle,
-        iconBg: 'bg-orange-100',
-        iconColor: 'text-orange-500',
-        borderColor: 'border-l-orange-400',
-        title: 'Re-purpose Materials',
-        desc: 'Caps and Labels • 300kg 180 days idle',
-        amount: '₦108,000',
-        amountLabel: 'TIED UP',
-        amountColor: 'text-orange-500',
-    },
+const plRows = [
+    { color: 'bg-[#4285F4]', material: 'PET Clear', cost: '₦450,000', revenue: '₦780,000', profit: '₦330,000', margin: '42.3%', marginClass: 'bg-[#A8E6B8] text-[#0A5C2F]' },
+    { color: 'bg-[#34A853]', material: 'HDPE Caps', cost: '₦210,000', revenue: '₦340,000', profit: '₦130,000', margin: '38.2%', marginClass: 'bg-[#0E8A43] text-white' },
+    { color: 'bg-[#FBBC05]', material: 'PP', cost: '₦185,000', revenue: '₦260,000', profit: '₦75,000', margin: '28.8%', marginClass: 'bg-slate-100 text-slate-600' },
+    { color: 'bg-[#A142F4]', material: 'LDPE Film', cost: '₦320,000', revenue: '₦410,000', profit: '₦90,000', margin: '22.0%', marginClass: 'bg-slate-100 text-slate-600' },
 ]
 
-const plRows = [
-    { color: 'bg-blue-500', material: 'PET Clear', cost: '₦450,000', revenue: '₦780,000', profit: '₦330,000', margin: '42.3%', marginGood: true },
-    { color: 'bg-emerald-500', material: 'HDPE Caps', cost: '₦210,000', revenue: '₦340,000', profit: '₦130,000', margin: '38.2%', marginGood: true },
-    { color: 'bg-yellow-400', material: 'PP', cost: '₦185,000', revenue: '₦260,000', profit: '₦75,000', margin: '28.8%', marginGood: false },
-    { color: 'bg-purple-400', material: 'LDPE Film', cost: '₦320,000', revenue: '₦410,000', profit: '₦90,000', margin: '22.0%', marginGood: false },
+const suppliers = [
+    { name: 'Uche Kenechukwu', sub: '1,240 kg collected', rank: '#1' },
+    { name: 'Green Globe Alliance', sub: '1,105 kg collected', rank: '#2' },
+    { name: 'Benson Oghenegare', sub: '980 kg collected', rank: '#3' },
 ]
 
 export const MoneyScreen: React.FC = () => {
     return (
-        <div className="space-y-5 w-full">
-            {/* Quick actions */}
-            <div className="flex flex-wrap gap-2 justify-end">
-                <Link
-                    to="/log-purchase"
-                    className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
-                >
-                    <ArrowDownToLine className="w-4 h-4 text-brand-blue" />
-                    Log Purchase
-                </Link>
-                <Link
-                    to="/log-processing"
-                    className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
-                >
-                    <RefreshCw className="w-4 h-4 text-brand-blue" />
-                    Log Processing
-                </Link>
-                <Link
-                    to="/log-sale"
-                    className="flex items-center gap-2 px-4 py-2 bg-brand-blue text-white rounded-lg text-sm font-medium hover:bg-brand-blue/90 transition-colors"
-                >
-                    <ArrowUpFromLine className="w-4 h-4" />
-                    Log Sale
-                </Link>
-            </div>
-
+        <div className="w-full max-w-6xl mx-auto space-y-6">
             {/* KPI row */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-                <KpiCard label="TODAY'S MARGIN" value="₦124,500" sub="vs yesterday" />
-                <KpiCard label="STOCK ON HAND" value="2,340 kg" sub="Across 14 batches" />
-                <KpiCard label="INBOUND (30D)" value="8,720 kg" sub="₦1.2M spent" />
-                <KpiCard label="OUTBOUND (30D)" value="6,450 kg" sub="₦1.6M revenue" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <KpiCard label="INBOUND (30D)" value="8,720 kg" sub="+18% vs last month" />
+                <KpiCard label="REVENUE" value="₦1,921,475" sub="+23% vs last month" />
+                <KpiCard label="AVERAGE YIELD" value="87.3%" sub="+2.1% increase" />
+                <KpiCard label="PENDING BATCHES" value="4" sub="Awaiting outbound" />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                {/* Money Leaks */}
-                <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 p-5">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="font-semibold text-slate-800">Money Leaks & Risks</h2>
-                        <Link to="/alerts" className="text-sm text-brand-blue hover:underline">View All Risks</Link>
+            {/* Alert Bar */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-[#FDFDFD] border-l-[6px] border-l-[#d34545] border-y border-r border-slate-100 rounded-r-xl shadow-sm">
+                <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-[#f8e5e5] flex items-center justify-center flex-shrink-0">
+                        <AlertTriangle className="w-5 h-5 text-[#d34545]" />
                     </div>
-                    <div className="space-y-3">
-                        {riskItems.map((item, i) => (
-                            <div key={i} className={`flex items-center gap-3 p-3 bg-slate-50 rounded-lg border-l-4 ${item.borderColor}`}>
-                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${item.iconBg}`}>
-                                    <item.icon className={`w-4 h-4 ${item.iconColor}`} />
+                    <div>
+                        <p className="text-[17px] font-bold text-slate-900">High contamination</p>
+                        <p className="text-[13px] font-medium text-[#8a94a6]">Batch ECO-0115-0042 • 18% waste</p>
+                    </div>
+                </div>
+                <div className="text-right mt-2 sm:mt-0">
+                    <p className="text-[17px] font-bold text-[#d34545]">-₦4,200</p>
+                    <p className="text-[10px] font-bold text-[#8a94a6] uppercase tracking-wider">OVERPAID</p>
+                </div>
+            </div>
+
+            {/* Inbound Volume Chart */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8">
+                <div className="flex items-center justify-between mb-12">
+                    <h2 className="text-[22px] font-bold text-slate-900">Inbound Volume</h2>
+                    <span className="text-[22px] font-bold text-[#0E8A43]">15D</span>
+                </div>
+                <div className="flex items-end justify-between h-48 px-2 md:px-8">
+                    {[
+                        { day: 'MON', h: '35%', type: 'light' },
+                        { day: 'TUE', h: '35%', type: 'light' },
+                        { day: 'WED', h: '60%', type: 'light' },
+                        { day: 'THU', h: '90%', type: 'dark' },
+                        { day: 'FRI', h: '90%', type: 'dark' },
+                        { day: 'SAT', h: '55%', type: 'light' },
+                        { day: 'SUN', h: '25%', type: 'light' },
+                    ].map((b, i) => (
+                        <div key={i} className="flex flex-col items-center w-12 md:w-16 h-full justify-end">
+                            <div 
+                                className={`w-full rounded-t-sm transition-all duration-500 ${b.type === 'dark' ? 'bg-[#A3C7B2]' : 'bg-[#E2EEE6]'}`}
+                                style={{ height: b.h }}
+                            />
+                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-4">{b.day}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* P&L Table */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                <div className="p-6 flex items-center justify-between border-b border-slate-50">
+                    <h2 className="text-[20px] font-bold text-slate-900">Profit & Loss by Material</h2>
+                    <div className="flex gap-3">
+                        <button className="text-[13px] font-bold px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">Export CSV</button>
+                        <Link to="/reports" className="text-[13px] font-bold px-4 py-2 bg-[#1264a3] text-white rounded-lg hover:bg-[#0e5185] transition-colors block text-center">Detailed Report</Link>
+                    </div>
+                </div>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left min-w-[600px]">
+                        <thead>
+                            <tr className="text-[11px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">
+                                <th className="px-8 py-4">Material</th>
+                                <th className="px-8 py-4">Cost</th>
+                                <th className="px-8 py-4">Revenue</th>
+                                <th className="px-8 py-4">Profit</th>
+                                <th className="px-8 py-4">Margin</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-50">
+                            {plRows.map(row => (
+                                <tr key={row.material}>
+                                    <td className="px-8 py-5">
+                                        <div className="flex items-center gap-3">
+                                            <div className={`w-3 h-3 rounded-full ${row.color}`} />
+                                            <span className="text-[15px] font-bold text-slate-900">{row.material}</span>
+                                        </div>
+                                    </td>
+                                    <td className="px-8 py-5 text-[14px] font-medium text-slate-500">{row.cost}</td>
+                                    <td className="px-8 py-5 text-[14px] font-medium text-slate-500">{row.revenue}</td>
+                                    <td className="px-8 py-5 text-[15px] font-bold text-slate-900">{row.profit}</td>
+                                    <td className="px-8 py-5">
+                                        <span className={`px-2.5 py-1 rounded-[4px] text-[12px] font-bold ${row.marginClass}`}>
+                                            {row.margin}
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {/* Top Suppliers & Major Buyers */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
+                    <h3 className="text-[18px] font-bold text-slate-900 mb-6">Top Suppliers</h3>
+                    <div className="space-y-6">
+                        {suppliers.map(s => (
+                            <div key={s.name} className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-[14px] font-bold text-slate-900">{s.name}</p>
+                                    <p className="text-[12px] font-medium text-[#3B82F6]">{s.sub}</p>
                                 </div>
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-semibold text-slate-800">{item.title}</p>
-                                    <p className="text-xs text-slate-500 truncate">{item.desc}</p>
-                                </div>
-                                <div className="text-right flex-shrink-0">
-                                    <p className={`text-sm font-bold ${item.amountColor}`}>{item.amount}</p>
-                                    <p className="text-[10px] text-slate-400 font-semibold">{item.amountLabel}</p>
-                                </div>
+                                <span className="text-[14px] font-bold text-[#0E8A43]">{s.rank}</span>
                             </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Right column */}
-                <div className="space-y-4">
-                    {/* Production Target */}
-                    <div className="bg-white rounded-xl border border-slate-200 p-5">
-                        <div className="flex items-center justify-between mb-3">
-                            <h3 className="font-semibold text-slate-800 text-sm">Production Target</h3>
-                            <span className="text-xs text-slate-500">Daily</span>
-                        </div>
-                        <p className="text-xs text-slate-500 mb-1">Daily Bales</p>
-                        <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm font-bold text-brand-blue">7/10</span>
-                        </div>
-                        <div className="h-2 bg-slate-100 rounded-full overflow-hidden mb-2">
-                            <div className="h-full bg-brand-blue rounded-full" style={{ width: '70%' }} />
-                        </div>
-                        <p className="text-xs text-slate-500">3 more bales to reach daily target</p>
-                    </div>
-
-                    {/* Top Suppliers */}
-                    <div className="bg-white rounded-xl border border-slate-200 p-5">
-                        <div className="flex items-center justify-between mb-3">
-                            <h3 className="font-semibold text-slate-800 text-sm">Top Suppliers (30d)</h3>
-                            <Link to="/collectors" className="text-xs text-brand-blue hover:underline">View all</Link>
-                        </div>
-                        <div className="space-y-3">
-                            {[
-                                { name: 'Uche Kenechukwu', sub: '1,240 kg collected', rank: '#1' },
-                                { name: 'Green Globe Alliance', sub: '1,105 kg collected', rank: '#2' },
-                                { name: 'Benson Oghenegare', sub: '980 kg collected', rank: '#3' },
-                            ].map(s => (
-                                <div key={s.name} className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-sm font-medium text-slate-800">{s.name}</p>
-                                        <p className="text-xs text-slate-500">{s.sub}</p>
-                                    </div>
-                                    <span className="text-xs font-bold text-brand-blue">{s.rank}</span>
+                <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
+                    <h3 className="text-[18px] font-bold text-slate-900 mb-6">Major Buyers</h3>
+                    <div className="space-y-6">
+                        {suppliers.map(s => (
+                            <div key={s.name} className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-[14px] font-bold text-slate-900">{s.name}</p>
+                                    <p className="text-[12px] font-medium text-[#3B82F6]">{s.sub}</p>
                                 </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* P&L Table */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5 overflow-x-auto">
-                <div className="flex items-center justify-between mb-4">
-                    <h2 className="font-semibold text-slate-800">Profit & Loss by Material</h2>
-                    <div className="flex gap-2">
-                        <button className="text-sm px-3 py-1.5 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50">Export CSV</button>
-                        <Link to="/reports" className="text-sm px-3 py-1.5 bg-brand-blue text-white rounded-lg hover:bg-brand-blue/90">Detailed Report</Link>
-                    </div>
-                </div>
-                <table className="w-full text-sm min-w-[480px]">
-                    <thead>
-                        <tr className="text-xs font-semibold text-slate-500 uppercase tracking-wide border-b border-slate-100">
-                            <th className="text-left pb-2">Material</th>
-                            <th className="text-left pb-2">Cost</th>
-                            <th className="text-left pb-2">Revenue</th>
-                            <th className="text-left pb-2">Profit</th>
-                            <th className="text-left pb-2">Margin</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-50">
-                        {plRows.map(row => (
-                            <tr key={row.material}>
-                                <td className="py-3">
-                                    <div className="flex items-center gap-2">
-                                        <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${row.color}`} />
-                                        {row.material}
-                                    </div>
-                                </td>
-                                <td className="py-3 text-slate-600">{row.cost}</td>
-                                <td className="py-3 text-slate-600">{row.revenue}</td>
-                                <td className="py-3 font-semibold text-slate-800">{row.profit}</td>
-                                <td className="py-3">
-                                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${row.marginGood ? 'bg-emerald-100 text-emerald-700' : 'text-slate-600'}`}>
-                                        {row.margin}
-                                    </span>
-                                </td>
-                            </tr>
+                                <span className="text-[14px] font-bold text-[#0E8A43]">{s.rank}</span>
+                            </div>
                         ))}
-                    </tbody>
-                </table>
+                    </div>
+                </div>
             </div>
 
             {/* Sustainable Impact */}
-            <div className="bg-white rounded-xl border border-slate-200 p-5 md:p-6 flex flex-col md:flex-row items-start md:items-center gap-5">
-                <div className="flex-1">
-                    <h2 className="text-xl font-bold text-emerald-600 mb-1">Sustainable Impact</h2>
-                    <p className="text-sm text-slate-500">Your collection operations this month have prevented significant plastic waste from reaching landfills.</p>
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mt-12 mb-8 px-4">
+                <div>
+                    <h2 className="text-[32px] font-bold text-[#0E8A43] mb-1">Verified Sustainable Impact</h2>
+                    <p className="text-[15px] font-bold text-slate-600">January 2026 - April 2026</p>
                 </div>
-                <div className="flex gap-6 md:gap-8 flex-wrap">
-                    <div className="text-center">
-                        <p className="text-xs text-slate-500 uppercase font-semibold mb-1">Plastic Diverted</p>
-                        <p className="text-2xl font-bold text-slate-800">8,720kg</p>
+                <div className="flex flex-wrap gap-12">
+                    <div className="flex flex-col items-center">
+                        <p className="text-[44px] leading-none font-bold text-[#0E8A43] tracking-tight mb-2">8,720kg</p>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Plastic Diverted</p>
                     </div>
-                    <div className="text-center">
-                        <p className="text-xs text-slate-500 uppercase font-semibold mb-1">Plastic Credit</p>
-                        <p className="text-2xl font-bold text-slate-800">8.7t</p>
+                    <div className="flex flex-col items-center">
+                        <p className="text-[44px] leading-none font-bold text-[#1264a3] tracking-tight mb-2">8.7t</p>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Plastic Credit</p>
                     </div>
-                    <div className="text-center">
-                        <p className="text-xs text-slate-500 uppercase font-semibold mb-1">CO2 Offset</p>
-                        <p className="text-2xl font-bold text-slate-800">12.4t</p>
+                    <div className="flex flex-col items-center">
+                        <p className="text-[44px] leading-none font-bold text-[#1264a3] tracking-tight mb-2">12.4t</p>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">CO2 Offset</p>
                     </div>
                 </div>
             </div>
@@ -230,10 +174,10 @@ export const MoneyScreen: React.FC = () => {
 
 function KpiCard({ label, value, sub }: { label: string; value: string; sub: string }) {
     return (
-        <div className="bg-white rounded-xl border border-slate-200 p-4">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">{label}</p>
-            <p className="text-lg md:text-xl font-bold text-slate-800">{value}</p>
-            <p className="text-xs text-slate-400 mt-0.5">{sub}</p>
+        <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <p className="text-[11px] font-bold text-[#8a94a6] uppercase tracking-widest mb-3">{label}</p>
+            <p className="text-[32px] leading-none font-bold text-slate-900 mb-2">{value}</p>
+            <p className="text-[11px] font-medium text-[#8a94a6]">{sub}</p>
         </div>
     )
 }

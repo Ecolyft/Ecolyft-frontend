@@ -26,6 +26,9 @@ import { Route as BatchesRouteImport } from './routes/batches'
 import { Route as AlertsRouteImport } from './routes/alerts'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as CollectorsNewRouteImport } from './routes/collectors.new'
+import { Route as CollectorsCollectorIdRouteImport } from './routes/collectors.$collectorId'
+import { Route as BuyersBuyerIdRouteImport } from './routes/buyers.$buyerId'
 import { Route as BatchesBatchIdRouteImport } from './routes/batches.$batchId'
 
 const UsersRoute = UsersRouteImport.update({
@@ -113,6 +116,21 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRoute,
 } as any)
+const CollectorsNewRoute = CollectorsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => CollectorsRoute,
+} as any)
+const CollectorsCollectorIdRoute = CollectorsCollectorIdRouteImport.update({
+  id: '/$collectorId',
+  path: '/$collectorId',
+  getParentRoute: () => CollectorsRoute,
+} as any)
+const BuyersBuyerIdRoute = BuyersBuyerIdRouteImport.update({
+  id: '/$buyerId',
+  path: '/$buyerId',
+  getParentRoute: () => BuyersRoute,
+} as any)
 const BatchesBatchIdRoute = BatchesBatchIdRouteImport.update({
   id: '/$batchId',
   path: '/$batchId',
@@ -123,8 +141,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/alerts': typeof AlertsRoute
   '/batches': typeof BatchesRouteWithChildren
-  '/buyers': typeof BuyersRoute
-  '/collectors': typeof CollectorsRoute
+  '/buyers': typeof BuyersRouteWithChildren
+  '/collectors': typeof CollectorsRouteWithChildren
   '/dashboard': typeof DashboardRouteWithChildren
   '/log-processing': typeof LogProcessingRoute
   '/log-purchase': typeof LogPurchaseRoute
@@ -137,14 +155,17 @@ export interface FileRoutesByFullPath {
   '/setup': typeof SetupRoute
   '/users': typeof UsersRoute
   '/batches/$batchId': typeof BatchesBatchIdRoute
+  '/buyers/$buyerId': typeof BuyersBuyerIdRoute
+  '/collectors/$collectorId': typeof CollectorsCollectorIdRoute
+  '/collectors/new': typeof CollectorsNewRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/alerts': typeof AlertsRoute
   '/batches': typeof BatchesRouteWithChildren
-  '/buyers': typeof BuyersRoute
-  '/collectors': typeof CollectorsRoute
+  '/buyers': typeof BuyersRouteWithChildren
+  '/collectors': typeof CollectorsRouteWithChildren
   '/log-processing': typeof LogProcessingRoute
   '/log-purchase': typeof LogPurchaseRoute
   '/log-sale': typeof LogSaleRoute
@@ -156,6 +177,9 @@ export interface FileRoutesByTo {
   '/setup': typeof SetupRoute
   '/users': typeof UsersRoute
   '/batches/$batchId': typeof BatchesBatchIdRoute
+  '/buyers/$buyerId': typeof BuyersBuyerIdRoute
+  '/collectors/$collectorId': typeof CollectorsCollectorIdRoute
+  '/collectors/new': typeof CollectorsNewRoute
   '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -163,8 +187,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/alerts': typeof AlertsRoute
   '/batches': typeof BatchesRouteWithChildren
-  '/buyers': typeof BuyersRoute
-  '/collectors': typeof CollectorsRoute
+  '/buyers': typeof BuyersRouteWithChildren
+  '/collectors': typeof CollectorsRouteWithChildren
   '/dashboard': typeof DashboardRouteWithChildren
   '/log-processing': typeof LogProcessingRoute
   '/log-purchase': typeof LogPurchaseRoute
@@ -177,6 +201,9 @@ export interface FileRoutesById {
   '/setup': typeof SetupRoute
   '/users': typeof UsersRoute
   '/batches/$batchId': typeof BatchesBatchIdRoute
+  '/buyers/$buyerId': typeof BuyersBuyerIdRoute
+  '/collectors/$collectorId': typeof CollectorsCollectorIdRoute
+  '/collectors/new': typeof CollectorsNewRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
@@ -199,6 +226,9 @@ export interface FileRouteTypes {
     | '/setup'
     | '/users'
     | '/batches/$batchId'
+    | '/buyers/$buyerId'
+    | '/collectors/$collectorId'
+    | '/collectors/new'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -218,6 +248,9 @@ export interface FileRouteTypes {
     | '/setup'
     | '/users'
     | '/batches/$batchId'
+    | '/buyers/$buyerId'
+    | '/collectors/$collectorId'
+    | '/collectors/new'
     | '/dashboard'
   id:
     | '__root__'
@@ -238,6 +271,9 @@ export interface FileRouteTypes {
     | '/setup'
     | '/users'
     | '/batches/$batchId'
+    | '/buyers/$buyerId'
+    | '/collectors/$collectorId'
+    | '/collectors/new'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
@@ -245,8 +281,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AlertsRoute: typeof AlertsRoute
   BatchesRoute: typeof BatchesRouteWithChildren
-  BuyersRoute: typeof BuyersRoute
-  CollectorsRoute: typeof CollectorsRoute
+  BuyersRoute: typeof BuyersRouteWithChildren
+  CollectorsRoute: typeof CollectorsRouteWithChildren
   DashboardRoute: typeof DashboardRouteWithChildren
   LogProcessingRoute: typeof LogProcessingRoute
   LogPurchaseRoute: typeof LogPurchaseRoute
@@ -381,6 +417,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/collectors/new': {
+      id: '/collectors/new'
+      path: '/new'
+      fullPath: '/collectors/new'
+      preLoaderRoute: typeof CollectorsNewRouteImport
+      parentRoute: typeof CollectorsRoute
+    }
+    '/collectors/$collectorId': {
+      id: '/collectors/$collectorId'
+      path: '/$collectorId'
+      fullPath: '/collectors/$collectorId'
+      preLoaderRoute: typeof CollectorsCollectorIdRouteImport
+      parentRoute: typeof CollectorsRoute
+    }
+    '/buyers/$buyerId': {
+      id: '/buyers/$buyerId'
+      path: '/$buyerId'
+      fullPath: '/buyers/$buyerId'
+      preLoaderRoute: typeof BuyersBuyerIdRouteImport
+      parentRoute: typeof BuyersRoute
+    }
     '/batches/$batchId': {
       id: '/batches/$batchId'
       path: '/$batchId'
@@ -402,6 +459,31 @@ const BatchesRouteChildren: BatchesRouteChildren = {
 const BatchesRouteWithChildren =
   BatchesRoute._addFileChildren(BatchesRouteChildren)
 
+interface BuyersRouteChildren {
+  BuyersBuyerIdRoute: typeof BuyersBuyerIdRoute
+}
+
+const BuyersRouteChildren: BuyersRouteChildren = {
+  BuyersBuyerIdRoute: BuyersBuyerIdRoute,
+}
+
+const BuyersRouteWithChildren =
+  BuyersRoute._addFileChildren(BuyersRouteChildren)
+
+interface CollectorsRouteChildren {
+  CollectorsCollectorIdRoute: typeof CollectorsCollectorIdRoute
+  CollectorsNewRoute: typeof CollectorsNewRoute
+}
+
+const CollectorsRouteChildren: CollectorsRouteChildren = {
+  CollectorsCollectorIdRoute: CollectorsCollectorIdRoute,
+  CollectorsNewRoute: CollectorsNewRoute,
+}
+
+const CollectorsRouteWithChildren = CollectorsRoute._addFileChildren(
+  CollectorsRouteChildren,
+)
+
 interface DashboardRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
@@ -418,8 +500,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AlertsRoute: AlertsRoute,
   BatchesRoute: BatchesRouteWithChildren,
-  BuyersRoute: BuyersRoute,
-  CollectorsRoute: CollectorsRoute,
+  BuyersRoute: BuyersRouteWithChildren,
+  CollectorsRoute: CollectorsRouteWithChildren,
   DashboardRoute: DashboardRouteWithChildren,
   LogProcessingRoute: LogProcessingRoute,
   LogPurchaseRoute: LogPurchaseRoute,

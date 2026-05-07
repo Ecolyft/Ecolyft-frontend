@@ -8,7 +8,6 @@ interface OutputLine {
     weight: string
 }
 
-const MATERIALS = ['PET Clear', 'PET Colored', 'HDPE Caps', 'PP', 'LDPE Film']
 const BATCHES = ['ECO-20261104-A001', 'ECO-20260115-0042', 'ECO-20260115-0043']
 
 export const LogSale: React.FC = () => {
@@ -18,7 +17,7 @@ export const LogSale: React.FC = () => {
     ])
     const [weightSold, setWeightSold] = useState('280')
     const [price, setPrice] = useState('84,000')
-    const [date, setDate] = useState('15 Jan 2026')
+    const [date] = useState('15 Jan 2026')
 
     const addLine = () => setLines(prev => [...prev, { id: Date.now(), material: 'PET Clear', batchId: '', weight: '' }])
     const removeLine = (id: number) => setLines(prev => prev.filter(l => l.id !== id))
