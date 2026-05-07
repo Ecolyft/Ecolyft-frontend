@@ -173,7 +173,7 @@ export const CollectorList: React.FC = () => {
                                         </span>
                                     </td>
                                     <td className="px-6 py-5 text-right">
-                                        <Link to={`/collectors/${i + 1}`} className="inline-flex p-1 hover:bg-slate-100 rounded text-slate-400">
+                                        <Link to="/collectors/$collectorId" params={{ collectorId: String(i + 1) }} className="inline-flex p-1 hover:bg-slate-100 rounded text-slate-400">
                                             <MoreVertical className="w-5 h-5" />
                                         </Link>
                                     </td>
