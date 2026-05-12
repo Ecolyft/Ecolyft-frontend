@@ -1,6 +1,6 @@
 import React from 'react'
 import { Filter, Download, ArrowUpRight, TrendingUp, Map, Lightbulb, ExternalLink, Plus } from 'lucide-react'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 
 const tableData = [
     { company: 'GreenPack Manufacturing', material: 'rPET Flakes', volume: '45,200', price: '840.00', ltv: '37,968,000', status: 'ACTIVE', statusColor: 'bg-[#EDF7ED] text-[#0E8A43]' },
@@ -10,6 +10,7 @@ const tableData = [
 ]
 
 export const BuyerList: React.FC = () => {
+    const navigate = useNavigate()
     return (
         <div className="space-y-8 w-full max-w-5xl mx-auto pb-12">
             {/* Header & Tabs */}
@@ -23,7 +24,10 @@ export const BuyerList: React.FC = () => {
                     </div>
                 </div>
                 <div className="pb-4">
-                    <button className="bg-[#4285F4] text-white px-5 py-2.5 rounded-lg text-[14px] font-bold shadow-sm hover:bg-[#3367D6] transition-colors flex items-center gap-2">
+                    <button
+                        onClick={() => navigate({ to: '/buyers/new' })}
+                        className="bg-[#4285F4] text-white px-5 py-2.5 rounded-lg text-[14px] font-bold shadow-sm hover:bg-[#3367D6] transition-colors flex items-center gap-2"
+                    >
                         <Plus className="w-4 h-4" /> Add New Buyer
                     </button>
                 </div>
@@ -110,7 +114,11 @@ export const BuyerList: React.FC = () => {
                         </thead>
                         <tbody className="divide-y divide-slate-50">
                             {tableData.map((row, i) => (
-                                <tr key={i} className="hover:bg-slate-50/50">
+                                <tr
+                                    key={i}
+                                    onClick={() => navigate({ to: '/buyers/$buyerId', params: { buyerId: String(i + 1) } })}
+                                    className="hover:bg-slate-50/50 cursor-pointer transition-colors"
+                                >
                                     <td className="px-6 py-4 font-bold text-slate-900">{row.company}</td>
                                     <td className="px-6 py-4">
                                         <span className="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-[4px] text-[11px] font-medium">

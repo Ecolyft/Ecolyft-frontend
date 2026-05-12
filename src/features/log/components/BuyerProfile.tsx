@@ -41,12 +41,18 @@ export const BuyerProfile: React.FC = () => {
                 </div>
                 
                 <div className="flex gap-3">
-                    <button className="px-5 py-2.5 bg-white border border-[#3B82F6] text-[#3B82F6] rounded-lg text-[13px] font-bold hover:bg-[#EBF3FC] transition-colors flex items-center gap-2">
+                    <Link
+                        to="/settings"
+                        className="px-5 py-2.5 bg-white border border-[#3B82F6] text-[#3B82F6] rounded-lg text-[13px] font-bold hover:bg-[#EBF3FC] transition-colors flex items-center gap-2"
+                    >
                         Edit Profile
-                    </button>
-                    <button className="px-5 py-2.5 bg-[#3B82F6] text-white rounded-lg text-[13px] font-bold hover:bg-[#2563EB] transition-colors shadow-sm flex items-center gap-2">
+                    </Link>
+                    <Link
+                        to="/log-sale"
+                        className="px-5 py-2.5 bg-[#3B82F6] text-white rounded-lg text-[13px] font-bold hover:bg-[#2563EB] transition-colors shadow-sm flex items-center gap-2"
+                    >
                         <Package className="w-4 h-4" /> Log New Sale
-                    </button>
+                    </Link>
                 </div>
             </div>
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { ArrowLeft, Clock, MapPin, AlertCircle, TrendingDown, Package, Share2, Download, Scale, CheckCircle2 } from 'lucide-react'
@@ -6,6 +6,70 @@ import { Link, useParams } from '@tanstack/react-router'
 
 function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
+}
+
+const SUPPLIER_COLORS: Record<string, string> = {
+    EG: 'bg-emerald-500',
+    SV: 'bg-blue-400',
+    ML: 'bg-amber-500',
+    NP: 'bg-teal-500',
+}
+
+const INBOUND_BATCHES = [
+    { id: 'INB-24-0091', initials: 'EG', supplier: 'EcoGrow Farms Ltd.',       date: 'Apr 10, 2024, 08:30', weight: '1,240.50 kg' },
+    { id: 'INB-24-0104', initials: 'SV', supplier: 'SunValley Cooperatives',   date: 'Apr 11, 2024, 11:15', weight: '980.20 kg' },
+    { id: 'INB-24-0112', initials: 'ML', supplier: 'Midwest Logistics Partners',date: 'Apr 11, 2024, 15:45', weight: '2,415.00 kg' },
+    { id: 'INB-24-0128', initials: 'NP', supplier: 'NaturePack Systems',       date: 'Apr 12, 2024, 09:00', weight: '3,120.45 kg' },
+]
+
+function SourceInboundBatches() {
+    const [expanded, setExpanded] = useState(false)
+    return (
+        <div className="bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+                <h3 className="text-base font-bold text-slate-900">Source Inbound Batches</h3>
+                <button className="text-slate-400 hover:text-slate-600">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                    </svg>
+                </button>
+            </div>
+            <table className="w-full text-sm">
+                <thead>
+                    <tr className="border-b border-slate-100 bg-slate-50/50">
+                        {['Batch ID', 'Supplier', 'Inbound Date', 'Gross Weight'].map(h => (
+                            <th key={h} className="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">{h}</th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-50">
+                    {INBOUND_BATCHES.map(b => (
+                        <tr key={b.id} className="hover:bg-slate-50/50">
+                            <td className="px-6 py-4">
+                                <span className="text-[#3574c4] font-semibold text-sm">{b.id}</span>
+                            </td>
+                            <td className="px-6 py-4">
+                                <div className="flex items-center gap-2.5">
+                                    <div className={`w-7 h-7 rounded-full ${SUPPLIER_COLORS[b.initials] ?? 'bg-slate-400'} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>
+                                        {b.initials}
+                                    </div>
+                                    <span className="text-slate-700 font-medium">{b.supplier}</span>
+                                </div>
+                            </td>
+                            <td className="px-6 py-4 text-slate-500">{b.date}</td>
+                            <td className="px-6 py-4 font-bold text-slate-800">{b.weight}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <div className="px-6 py-4 text-center border-t border-slate-50">
+                <button onClick={() => setExpanded((e: boolean) => !e)}
+                    className="text-sm font-semibold text-[#3574c4] hover:underline">
+                    {expanded ? 'Show less ∧' : 'View all 14 inbound batches ∨'}
+                </button>
+            </div>
+        </div>
+    )
 }
 
 export const BatchDetail: React.FC = () => {
@@ -31,7 +95,7 @@ export const BatchDetail: React.FC = () => {
                 </div>
 
                 {/* Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     {/* Blue Card */}
                     <div className="bg-[#2D7BC8] text-white p-6 rounded-[10px] flex flex-col justify-between shadow-sm h-[150px]">
                         <div className="flex justify-between items-start">
@@ -49,7 +113,6 @@ export const BatchDetail: React.FC = () => {
                         <div className="flex flex-col h-full">
                             <p className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">INBOUND SOURCES</p>
                             <p className="text-[38px] leading-none font-bold text-slate-800">14</p>
-                            
                             <div className="mt-auto border-t border-slate-200/80 pt-3">
                                 <div className="flex justify-between text-[10px] font-bold text-slate-500 mb-1.5">
                                     <span>Capacity Utilization</span>
@@ -62,6 +125,9 @@ export const BatchDetail: React.FC = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* Source Inbound Batches */}
+                <SourceInboundBatches />
             </div>
         )
     }

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Camera, ChevronDown, Plus, AlertTriangle } from 'lucide-react'
+import { useNavigate } from '@tanstack/react-router'
 
 export const LogPurchase: React.FC = () => {
+    const navigate = useNavigate()
     const [supplier, setSupplier] = useState('Chidi Nwosu')
     const [materialType, setMaterialType] = useState('PET Clear Bottles')
     const [weight, setWeight] = useState('450')
@@ -126,7 +128,10 @@ export const LogPurchase: React.FC = () => {
                         </div>
                     </div>
 
-                    <button className="w-full bg-brand-blue text-white font-semibold py-3.5 rounded-lg hover:bg-brand-blue/90 transition-all">
+                    <button
+                        onClick={() => navigate({ to: '/batches' })}
+                        className="w-full bg-brand-blue text-white font-semibold py-3.5 rounded-lg hover:bg-brand-blue/90 transition-all"
+                    >
                         Generate Invoice
                     </button>
                 </div>

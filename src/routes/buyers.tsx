@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router'
 import { DashboardLayout } from '../features/dashboard/components/DashboardLayout'
 import { BuyerList } from '../features/log/components/BuyerList'
 
@@ -7,9 +7,13 @@ export const Route = createFileRoute('/buyers')({
 })
 
 function BuyersPage() {
+    const location = useLocation()
+    const isExact = location.pathname === '/buyers'
+
     return (
         <DashboardLayout>
-            <BuyerList />
+            {isExact ? <BuyerList /> : <Outlet />}
         </DashboardLayout>
     )
 }
+

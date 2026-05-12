@@ -1,8 +1,9 @@
 import React from 'react'
 import { FileText, MapPin, Building2, Package, Check, ChevronDown } from 'lucide-react'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 
 export const AddCollector: React.FC = () => {
+    const navigate = useNavigate()
     return (
         <div className="space-y-8 w-full max-w-3xl mx-auto pb-12">
             {/* Top Breadcrumb */}
@@ -152,10 +153,16 @@ export const AddCollector: React.FC = () => {
 
                 {/* Footer Actions */}
                 <div className="p-6 border-t border-slate-100 bg-[#FCFCFD] flex justify-center gap-4">
-                    <button className="px-8 py-3 bg-white border-2 border-[#3B82F6] text-[#3B82F6] rounded-lg text-[14px] font-bold hover:bg-[#EBF3FC] transition-colors">
+                    <button
+                        onClick={() => alert('Saved as draft!')}
+                        className="px-8 py-3 bg-white border-2 border-[#3B82F6] text-[#3B82F6] rounded-lg text-[14px] font-bold hover:bg-[#EBF3FC] transition-colors"
+                    >
                         Save as Draft
                     </button>
-                    <button className="px-8 py-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white rounded-lg text-[14px] font-bold transition-colors shadow-sm">
+                    <button
+                        onClick={() => navigate({ to: '/collectors' })}
+                        className="px-8 py-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white rounded-lg text-[14px] font-bold transition-colors shadow-sm"
+                    >
                         Complete Registration
                     </button>
                 </div>

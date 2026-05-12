@@ -264,7 +264,9 @@ export const BatchList: React.FC = () => {
                             {INBOUND_DATA.map((row) => (
                                 <tr key={row.id} className="hover:bg-slate-50 transition-colors">
                                     <td className="p-4"><input type="checkbox" className="rounded text-brand-blue" checked={selectedInboundIds.includes(row.id)} onChange={() => toggleInboundSelection(row.id)} /></td>
-                                    <td className="p-4 font-bold text-brand-blue cursor-pointer">{row.id}</td>
+                                    <td className="p-4 font-bold text-brand-blue cursor-pointer">
+                                        <Link to="/batches/$batchId" params={{ batchId: row.id }} className="hover:underline">{row.id}</Link>
+                                    </td>
                                     <td className="p-4 font-medium text-slate-600">{row.supplier}</td>
                                     <td className="p-4 text-slate-500">{row.date}</td>
                                     <td className="p-4 text-slate-500">{row.material}</td>

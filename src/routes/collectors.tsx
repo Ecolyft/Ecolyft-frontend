@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router'
 import { DashboardLayout } from '../features/dashboard/components/DashboardLayout'
 import { CollectorList } from '../features/log/components/CollectorList'
 
@@ -7,9 +7,13 @@ export const Route = createFileRoute('/collectors')({
 })
 
 function CollectorsPage() {
+    const location = useLocation()
+    const isExact = location.pathname === '/collectors'
+
     return (
         <DashboardLayout>
-            <CollectorList />
+            {isExact ? <CollectorList /> : <Outlet />}
         </DashboardLayout>
     )
 }
+

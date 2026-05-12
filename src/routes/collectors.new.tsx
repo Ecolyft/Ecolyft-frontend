@@ -6,9 +6,6 @@ export const Route = createFileRoute('/collectors/new')({
 })
 
 function AddCollectorComponent() {
-    return (
-        <div className="p-8">
-            <AddCollector />
-        </div>
-    )
+    return <AddCollector />
 }
+

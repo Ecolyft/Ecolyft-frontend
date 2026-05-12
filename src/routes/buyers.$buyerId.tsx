@@ -6,9 +6,6 @@ export const Route = createFileRoute('/buyers/$buyerId')({
 })
 
 function BuyerProfileComponent() {
-    return (
-        <div className="p-8">
-            <BuyerProfile />
-        </div>
-    )
+    return <BuyerProfile />
 }
+

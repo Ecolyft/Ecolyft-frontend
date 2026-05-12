@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { ChevronDown, X, Plus, MessageSquare } from 'lucide-react'
+import { useNavigate } from '@tanstack/react-router'
 
 interface OutputLine {
     id: number
@@ -11,6 +12,7 @@ interface OutputLine {
 const BATCHES = ['ECO-20261104-A001', 'ECO-20260115-0042', 'ECO-20260115-0043']
 
 export const LogSale: React.FC = () => {
+    const navigate = useNavigate()
     const [company, setCompany] = useState('Lagos Recycling Co.')
     const [lines, setLines] = useState<OutputLine[]>([
         { id: 1, material: 'PET Clear', batchId: 'Batch ID', weight: '280 kg' },
@@ -143,7 +145,10 @@ export const LogSale: React.FC = () => {
                     <p className="text-[13px] font-medium text-emerald-800/80">An email invoice link will be sent to the buyer after recording.</p>
                 </div>
 
-                <button className="w-full bg-[#4A90E2] text-white font-bold py-4 rounded-lg hover:shadow-lg active:scale-[0.98] transition-all shadow-md">
+                <button
+                    onClick={() => navigate({ to: '/log-sale/success' })}
+                    className="w-full bg-[#4A90E2] text-white font-bold py-4 rounded-lg hover:shadow-lg active:scale-[0.98] transition-all shadow-md"
+                >
                     Create Sale
                 </button>
             </div>

@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { ChevronRight, Mail, ShieldCheck } from 'lucide-react'
+import { useNavigate } from '@tanstack/react-router'
 
 export const ResetPassword: React.FC = () => {
     const [step, setStep] = useState(1)
+    const navigate = useNavigate()
 
     return (
         <div className="space-y-6">
@@ -55,7 +57,7 @@ export const ResetPassword: React.FC = () => {
             )}
 
             {step === 3 && (
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); navigate({ to: '/login' }) }}>
                     <div className="space-y-1.5">
                         <label className="text-sm font-medium text-slate-700">New Password</label>
                         <input type="password" placeholder="••••••••" className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all" />

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { ChevronDown, X, Plus } from 'lucide-react'
+import { useNavigate } from '@tanstack/react-router'
 
 
 
@@ -59,6 +60,7 @@ function OutputLines({ lines, setLines }: { lines: OutputLine[], setLines: React
 }
 
 export const LogProcessing: React.FC = () => {
+    const navigate = useNavigate()
     const [batch, setBatch] = useState('ECO-20261104-A001')
     const [inputWeight] = useState('450 kg')
     const [washLines, setWashLines] = useState<OutputLine[]>([
@@ -115,7 +117,10 @@ export const LogProcessing: React.FC = () => {
 
                     </div>
 
-                    <button className="w-full bg-brand-blue text-white font-semibold py-3.5 rounded-lg hover:bg-brand-blue/90 transition-all">
+                    <button
+                        onClick={() => navigate({ to: '/batches' })}
+                        className="w-full bg-brand-blue text-white font-semibold py-3.5 rounded-lg hover:bg-brand-blue/90 transition-all"
+                    >
                         Record Throughput
                     </button>
                 </div>

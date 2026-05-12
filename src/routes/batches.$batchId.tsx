@@ -8,3 +8,4 @@ export const Route = createFileRoute('/batches/$batchId')({
 function BatchDetailPage() {
     return <BatchDetail />
 }
+

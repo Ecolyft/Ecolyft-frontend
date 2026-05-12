@@ -6,9 +6,5 @@ export const Route = createFileRoute('/collectors/$collectorId')({
 })
 
 function CollectorProfileComponent() {
-    return (
-        <div className="p-8">
-            <CollectorProfile />
-        </div>
-    )
+    return <CollectorProfile />
 }

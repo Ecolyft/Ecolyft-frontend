@@ -14,7 +14,7 @@ export const RegisterForm: React.FC = () => {
                 <p className="text-sm text-slate-500">Create your EcoLyft account</p>
             </div>
 
-            <form className="space-y-4" onSubmit={e => { e.preventDefault(); navigate({ to: '/setup' }) }}>
+            <form className="space-y-4" onSubmit={e => { e.preventDefault(); navigate({ to: '/otp' }) }}>
                 <div className="space-y-1.5">
                     <label className="text-sm text-slate-700">Full name</label>
                     <input
