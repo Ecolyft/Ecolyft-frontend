@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { ArrowLeft, Clock, MapPin, AlertCircle, TrendingDown, Package, Share2, Download, Scale, CheckCircle2 } from 'lucide-react'
+import { Clock, MapPin, AlertCircle, TrendingDown, Package, Share2, Download, Scale, CheckCircle2 } from 'lucide-react'
 import { Link, useParams } from '@tanstack/react-router'
 
 function cn(...inputs: ClassValue[]) {
@@ -26,42 +26,44 @@ function SourceInboundBatches() {
     const [expanded, setExpanded] = useState(false)
     return (
         <div className="bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-                <h3 className="text-base font-bold text-slate-900">Source Inbound Batches</h3>
+            <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-slate-100">
+                <h3 className="text-sm md:text-base font-bold text-slate-900">Source Inbound Batches</h3>
                 <button className="text-slate-400 hover:text-slate-600">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
                     </svg>
                 </button>
             </div>
-            <table className="w-full text-sm">
-                <thead>
-                    <tr className="border-b border-slate-100 bg-slate-50/50">
-                        {['Batch ID', 'Supplier', 'Inbound Date', 'Gross Weight'].map(h => (
-                            <th key={h} className="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">{h}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-50">
-                    {INBOUND_BATCHES.map(b => (
-                        <tr key={b.id} className="hover:bg-slate-50/50">
-                            <td className="px-6 py-4">
-                                <span className="text-[#3574c4] font-semibold text-sm">{b.id}</span>
-                            </td>
-                            <td className="px-6 py-4">
-                                <div className="flex items-center gap-2.5">
-                                    <div className={`w-7 h-7 rounded-full ${SUPPLIER_COLORS[b.initials] ?? 'bg-slate-400'} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>
-                                        {b.initials}
-                                    </div>
-                                    <span className="text-slate-700 font-medium">{b.supplier}</span>
-                                </div>
-                            </td>
-                            <td className="px-6 py-4 text-slate-500">{b.date}</td>
-                            <td className="px-6 py-4 font-bold text-slate-800">{b.weight}</td>
+            <div className="overflow-x-auto">
+                <table className="w-full text-sm min-w-[600px] md:min-w-0">
+                    <thead>
+                        <tr className="border-b border-slate-100 bg-slate-50/50">
+                            {['Batch ID', 'Supplier', 'Inbound Date', 'Gross Weight'].map(h => (
+                                <th key={h} className="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">{h}</th>
+                            ))}
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody className="divide-y divide-slate-50">
+                        {INBOUND_BATCHES.map(b => (
+                            <tr key={b.id} className="hover:bg-slate-50/50">
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <span className="text-[#3574c4] font-semibold text-sm">{b.id}</span>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <div className="flex items-center gap-2.5">
+                                        <div className={`w-7 h-7 rounded-full ${SUPPLIER_COLORS[b.initials] ?? 'bg-slate-400'} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>
+                                            {b.initials}
+                                        </div>
+                                        <span className="text-slate-700 font-medium">{b.supplier}</span>
+                                    </div>
+                                </td>
+                                <td className="px-6 py-4 text-slate-500 whitespace-nowrap">{b.date}</td>
+                                <td className="px-6 py-4 font-bold text-slate-800 whitespace-nowrap">{b.weight}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
             <div className="px-6 py-4 text-center border-t border-slate-50">
                 <button onClick={() => setExpanded((e: boolean) => !e)}
                     className="text-sm font-semibold text-[#3574c4] hover:underline">
@@ -84,10 +86,10 @@ export const BatchDetail: React.FC = () => {
         return (
             <div className="max-w-5xl mx-auto pb-12">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-6 mt-2">
+                <div className="flex items-center justify-between mb-6 mt-2 px-4 md:px-0">
                     <div>
-                        <h1 className="text-[15px] font-bold text-[#3574c4]">Batch ID</h1>
-                        <h2 className="text-[28px] leading-tight font-bold text-[#3574c4]">{batchId}</h2>
+                        <h1 className="text-[12px] md:text-[15px] font-bold text-[#3574c4]">Batch ID</h1>
+                        <h2 className="text-xl md:text-[28px] leading-tight font-bold text-[#3574c4]">{batchId}</h2>
                     </div>
                     <button className="p-2 text-slate-800 hover:bg-slate-100 rounded-lg transition-colors">
                         <Download className="w-5 h-5" />
@@ -95,26 +97,26 @@ export const BatchDetail: React.FC = () => {
                 </div>
 
                 {/* Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                     {/* Blue Card */}
-                    <div className="bg-[#2D7BC8] text-white p-6 rounded-[10px] flex flex-col justify-between shadow-sm h-[150px]">
+                    <div className="bg-[#2D7BC8] text-white p-5 md:p-6 rounded-[10px] flex flex-col justify-between shadow-sm h-[140px] md:h-[150px]">
                         <div className="flex justify-between items-start">
-                            <p className="text-[11px] font-bold text-white/80 uppercase tracking-widest mt-0.5">TOTAL INPUT WEIGHT</p>
-                            <Scale className="w-8 h-8 text-white/40" strokeWidth={1.5} />
+                            <p className="text-[10px] md:text-[11px] font-bold text-white/80 uppercase tracking-widest mt-0.5">TOTAL INPUT WEIGHT</p>
+                            <Scale className="w-6 h-6 md:w-8 md:h-8 text-white/40" strokeWidth={1.5} />
                         </div>
                         <div className="flex items-baseline gap-1.5 mt-auto">
-                            <span className="text-[44px] leading-none font-bold tracking-tight">12,450.80</span>
-                            <span className="text-base font-medium text-white/80 mb-1">kg</span>
+                            <span className="text-3xl md:text-[44px] leading-none font-bold tracking-tight">12,450.80</span>
+                            <span className="text-sm md:text-base font-medium text-white/80 mb-1">kg</span>
                         </div>
                     </div>
 
                     {/* Grey Card */}
-                    <div className="bg-[#F8F7F4] border border-[#f0f0f0] p-6 rounded-[10px] shadow-sm flex flex-col justify-between h-[150px]">
+                    <div className="bg-[#F8F7F4] border border-[#f0f0f0] p-5 md:p-6 rounded-[10px] shadow-sm flex flex-col justify-between h-[140px] md:h-[150px]">
                         <div className="flex flex-col h-full">
-                            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">INBOUND SOURCES</p>
-                            <p className="text-[38px] leading-none font-bold text-slate-800">14</p>
+                            <p className="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">INBOUND SOURCES</p>
+                            <p className="text-3xl md:text-[38px] leading-none font-bold text-slate-800">14</p>
                             <div className="mt-auto border-t border-slate-200/80 pt-3">
-                                <div className="flex justify-between text-[10px] font-bold text-slate-500 mb-1.5">
+                                <div className="flex justify-between text-[9px] md:text-[10px] font-bold text-slate-500 mb-1.5">
                                     <span>Capacity Utilization</span>
                                     <span>82%</span>
                                 </div>
@@ -202,28 +204,25 @@ export const BatchDetail: React.FC = () => {
                             <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">TRANSACTION DETAILS</h3>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-y-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6 md:gap-y-8">
                             <div>
                                 <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">BUYER ENTITY</p>
                                 <p className="text-sm font-medium text-slate-800">Global Polymers Ltd.</p>
                             </div>
-                            <div>
-                                {/* empty slot to match design alignment if needed, or market price moves here */}
-                                <div className="grid grid-cols-2">
-                                    <div>
-                                        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">MARKET PRICE</p>
-                                        <div className="flex items-baseline gap-1">
-                                            <span className="text-lg font-bold text-brand-blue">₦18.40</span>
-                                            <span className="text-xs text-slate-500">/kg</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">TOTAL SALE</p>
-                                        <p className="text-lg font-medium text-slate-800">₦229,080</p>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">MARKET PRICE</p>
+                                    <div className="flex items-baseline gap-1">
+                                        <span className="text-base md:text-lg font-bold text-brand-blue">₦18.40</span>
+                                        <span className="text-[10px] text-slate-500">/kg</span>
                                     </div>
                                 </div>
+                                <div>
+                                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">TOTAL SALE</p>
+                                    <p className="text-base md:text-lg font-medium text-slate-800">₦229,080</p>
+                                </div>
                             </div>
-                            <div className="col-span-2">
+                            <div className="sm:col-span-2">
                                 <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">CONFIRMATION DATE</p>
                                 <p className="text-sm font-medium text-slate-800">April 11, 2024 • 14:30 GMT</p>
                             </div>
@@ -234,9 +233,9 @@ export const BatchDetail: React.FC = () => {
                     <div className="bg-[#1f6b9e] text-white rounded-xl p-6 lg:col-span-2 shadow-sm">
                         <p className="text-[9px] font-bold text-white/70 uppercase tracking-wider mb-4">ENVIRONMENTAL IMPACT</p>
                         
-                        <div className="flex items-baseline gap-2 mb-6">
-                            <span className="text-4xl font-bold">4.8</span>
-                            <span className="text-xs font-bold text-white/90 uppercase tracking-wider">METRIC TONS CO2 SAVED</span>
+                        <div className="flex flex-wrap items-baseline gap-2 mb-6">
+                            <span className="text-3xl md:text-4xl font-bold">4.8</span>
+                            <span className="text-[10px] md:text-xs font-bold text-white/90 uppercase tracking-wider">METRIC TONS CO2 SAVED</span>
                         </div>
 
                         <p className="text-xs text-white/80 leading-relaxed mb-8 max-w-sm">
@@ -257,23 +256,20 @@ export const BatchDetail: React.FC = () => {
 
     // Legacy timeline view for other IDs
     return (
-        <div className="max-w-4xl mx-auto space-y-8 pb-12">
-            <div className="flex items-center justify-between">
-                <Link to="/batches" className="text-slate-500 flex items-center space-x-2 hover:text-slate-700 transition-colors">
-                    <ArrowLeft className="w-5 h-5" />
-                    <span className="font-medium text-sm">All Batches</span>
-                </Link>
+        <div className="max-w-4xl mx-auto space-y-8 pb-12 px-2">
+            <div className="flex items-center justify-end">
                 <button className="flex items-center space-x-2 text-brand-blue font-bold text-sm hover:underline">
                     <Share2 className="w-4 h-4" />
-                    <span>Export Traceability Report</span>
+                    <span className="hidden sm:inline">Export Traceability Report</span>
+                    <span className="sm:hidden">Export</span>
                 </button>
             </div>
 
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mt-2">
                 <div className="space-y-3">
-                    <div className="flex items-center space-x-4">
-                        <h1 className="text-[40px] leading-none font-bold text-slate-900 tracking-tight">{batchId}</h1>
-                        <span className="px-3.5 py-1 rounded-full bg-[#E5F5EC] text-[#037847] text-[10px] font-bold uppercase tracking-wider">Stored</span>
+                    <div className="flex flex-wrap items-center gap-2 md:gap-4">
+                        <h1 className="text-2xl md:text-[40px] leading-none font-bold text-slate-900 tracking-tight">{batchId}</h1>
+                        <span className="px-2.5 py-0.5 md:px-3.5 md:py-1 rounded-full bg-[#E5F5EC] text-[#037847] text-[9px] md:text-[10px] font-bold uppercase tracking-wider">Stored</span>
                     </div>
                     <div className="flex items-center space-x-6 text-sm text-slate-500 font-medium">
                         <div className="flex items-center space-x-1.5">
@@ -302,22 +298,22 @@ export const BatchDetail: React.FC = () => {
                             date="Apr 12, 10:24 AM"
                             status="done"
                         >
-                            <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm grid grid-cols-2 md:grid-cols-4 gap-6">
+                            <div className="bg-white border border-slate-100 rounded-2xl p-5 md:p-6 shadow-sm grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                                 <div>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 block">Collector</span>
-                                    <p className="text-[15px] font-bold text-slate-900">Sani Mohammed</p>
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Collector</span>
+                                    <p className="text-sm md:text-[15px] font-bold text-slate-900">Sani Mohammed</p>
                                 </div>
                                 <div>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 block">Weight</span>
-                                    <p className="text-[15px] font-bold text-slate-900">450kg</p>
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Weight</span>
+                                    <p className="text-sm md:text-[15px] font-bold text-slate-900">450kg</p>
                                 </div>
                                 <div>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 block">Material</span>
-                                    <p className="text-[15px] font-bold text-slate-900">PET Bottles</p>
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Material</span>
+                                    <p className="text-sm md:text-[15px] font-bold text-slate-900">PET Bottles</p>
                                 </div>
                                 <div>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 block">Price Paid</span>
-                                    <p className="text-[15px] font-bold text-slate-900">₦125,000</p>
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Price Paid</span>
+                                    <p className="text-sm md:text-[15px] font-bold text-slate-900">₦125,000</p>
                                 </div>
                             </div>
                         </TimelineItem>

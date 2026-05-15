@@ -1,5 +1,5 @@
 import React from 'react'
-import { Search, Filter, Download, MoreVertical, Users, CheckCircle2, Package, Banknote, ArrowUpRight, ArrowDownRight, ArrowRight } from 'lucide-react'
+import { Search, Filter, Download, MoreVertical, Users, CheckCircle2, Package, Banknote, ArrowUpRight, ArrowDownRight, ArrowRight, Plus } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 
 const tableData = [
@@ -53,15 +53,15 @@ export const CollectorList: React.FC = () => {
                     </div>
                     <p className="text-[15px] font-medium text-slate-500 mb-4">Manage performance and quality of your supply chain.</p>
                 </div>
-                <div className="pb-4">
-                    <Link to="/collectors/new" className="bg-[#4285F4] text-white px-5 py-2.5 rounded-lg text-[14px] font-bold shadow-sm hover:bg-[#3367D6] transition-colors flex items-center gap-2">
-                        + Add New Supplier
+                <div className="pb-4 w-full sm:w-auto">
+                    <Link to="/collectors/new" className="w-full sm:w-auto bg-[#4285F4] text-white px-5 py-2.5 rounded-lg text-[14px] font-bold shadow-sm hover:bg-[#3367D6] transition-colors flex items-center justify-center gap-2">
+                        <Plus className="w-4 h-4" /> Add New Supplier
                     </Link>
                 </div>
             </div>
 
             {/* KPI Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                 <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm relative overflow-hidden">
                     <div className="flex justify-between items-start mb-4">
                         <div className="w-10 h-10 rounded-lg bg-[#EBF3FC] flex items-center justify-center text-[#3B82F6]">
@@ -134,11 +134,11 @@ export const CollectorList: React.FC = () => {
                         <tbody className="divide-y divide-slate-50">
                             {tableData.map((row, i) => (
                                 <tr key={i} className="hover:bg-slate-50/50 transition-colors">
-                                    <td className="px-6 py-5">
+                                    <td className="px-6 py-5 whitespace-nowrap">
                                         <div className="font-bold text-[14px] text-slate-900 mb-0.5">{row.name}</div>
                                         <div className="text-[12px] text-slate-500 font-medium">{row.phone}</div>
                                     </td>
-                                    <td className="px-6 py-5">
+                                    <td className="px-6 py-5 whitespace-nowrap">
                                         <div className="font-bold text-[14px] text-slate-900">{row.vol}</div>
                                         <div className="flex items-center gap-0.5 mt-0.5">
                                             {row.volUp === true && <ArrowUpRight className="w-3 h-3 text-[#0E8A43]" />}
@@ -149,14 +149,14 @@ export const CollectorList: React.FC = () => {
                                             </span>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-5">
+                                    <td className="px-6 py-5 whitespace-nowrap">
                                         <div className="font-medium text-[13px] text-slate-700 mb-2">{row.yield}</div>
                                         <div className="h-1.5 w-16 bg-slate-100 rounded-full overflow-hidden">
                                             <div className={`h-full rounded-full ${row.yieldColor}`} style={{ width: row.yield }} />
                                         </div>
                                     </td>
-                                    <td className="px-6 py-5">
-                                        <div className="flex gap-1.5 flex-wrap">
+                                    <td className="px-6 py-5 whitespace-nowrap">
+                                        <div className="flex gap-1.5 flex-wrap max-w-[150px]">
                                             {row.materials.map(m => (
                                                 <span key={m.name} className={`px-2 py-0.5 rounded-[4px] text-[10px] font-bold uppercase tracking-wider ${m.color}`}>
                                                     {m.name}
@@ -164,15 +164,15 @@ export const CollectorList: React.FC = () => {
                                             ))}
                                         </div>
                                     </td>
-                                    <td className="px-6 py-5">
+                                    <td className="px-6 py-5 whitespace-nowrap">
                                         <span className={`text-[13px] font-medium ${row.wasteColor}`}>{row.waste}</span>
                                     </td>
-                                    <td className="px-6 py-5">
+                                    <td className="px-6 py-5 whitespace-nowrap">
                                         <span className={`px-2.5 py-1 rounded-[4px] text-[12px] font-bold ${row.statusColor}`}>
                                             {row.status}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-5 text-right">
+                                    <td className="px-6 py-5 text-right whitespace-nowrap">
                                         <Link to="/collectors/$collectorId" params={{ collectorId: String(i + 1) }} className="inline-flex p-1 hover:bg-slate-100 rounded text-slate-400">
                                             <MoreVertical className="w-5 h-5" />
                                         </Link>

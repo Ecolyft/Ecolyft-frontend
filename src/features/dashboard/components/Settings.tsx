@@ -178,30 +178,30 @@ function EquipmentRegistry() {
     return (
         <div className="space-y-5">
             {/* KPI row */}
-            <div className="grid grid-cols-3 gap-4">
-                <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                    <div className="flex justify-between items-start mb-4">
-                        <Wrench className="w-5 h-5 text-[#3B82F6]" />
-                        <span className="text-xs font-bold text-emerald-600">+2 New</span>
+            <div className="grid grid-cols-3 gap-2 md:gap-4">
+                <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 shadow-sm">
+                    <div className="flex justify-between items-start mb-2 md:mb-4">
+                        <Wrench className="w-4 h-4 md:w-5 md:h-5 text-[#3B82F6]" />
+                        <span className="text-[9px] md:text-xs font-bold text-emerald-600">+2</span>
                     </div>
-                    <p className="text-xs text-slate-400 mb-1">Total Scales</p>
-                    <p className="text-2xl font-bold text-slate-900">{scales.length}</p>
+                    <p className="text-[9px] md:text-xs text-slate-400 mb-1 leading-tight">Total Scales</p>
+                    <p className="text-xl md:text-2xl font-bold text-slate-900 leading-none">{scales.length}</p>
                 </div>
-                <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                    <div className="flex justify-between items-start mb-4">
-                        <AlertTriangle className="w-5 h-5 text-amber-500" />
-                        <span className="text-xs font-bold text-red-500">Action Req.</span>
+                <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 shadow-sm">
+                    <div className="flex justify-between items-start mb-2 md:mb-4">
+                        <AlertTriangle className="w-4 h-4 md:w-5 md:h-5 text-amber-500" />
+                        <span className="text-[9px] md:text-xs font-bold text-red-500">!</span>
                     </div>
-                    <p className="text-xs text-slate-400 mb-1">Calibration Overdue</p>
-                    <p className="text-2xl font-bold text-slate-900">{calibOverdue + 14}</p>
+                    <p className="text-[9px] md:text-xs text-slate-400 mb-1 leading-tight">Calib. Due</p>
+                    <p className="text-xl md:text-2xl font-bold text-slate-900 leading-none">{calibOverdue + 14}</p>
                 </div>
-                <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                    <div className="flex justify-between items-start mb-4">
-                        <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                        <span className="text-xs font-bold text-emerald-600">98% Uptime</span>
+                <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 shadow-sm">
+                    <div className="flex justify-between items-start mb-2 md:mb-4">
+                        <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-emerald-500" />
+                        <span className="hidden md:inline text-xs font-bold text-emerald-600">98%</span>
                     </div>
-                    <p className="text-xs text-slate-400 mb-1">Active Hardware</p>
-                    <p className="text-2xl font-bold text-slate-900">{equipment.filter(e => e.status === 'Active').length}</p>
+                    <p className="text-[9px] md:text-xs text-slate-400 mb-1 leading-tight">Active HW</p>
+                    <p className="text-xl md:text-2xl font-bold text-slate-900 leading-none">{equipment.filter(e => e.status === 'Active').length}</p>
                 </div>
             </div>
 
@@ -215,37 +215,39 @@ function EquipmentRegistry() {
                     <button onClick={() => setModal({ type: 'add-eq' })}
                         className="text-xs font-bold text-[#3B82F6] hover:underline">+ ADD EQUIPMENT</button>
                 </div>
-                <table className="w-full text-sm">
-                    <thead>
-                        <tr className="border-b border-slate-100 bg-slate-50/50">
-                            {['Device Name','Serial No.','Location','Status','Action'].map(h => (
-                                <th key={h} className="px-5 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">{h}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-50">
-                        {equipment.map((eq, i) => (
-                            <tr key={i} className="hover:bg-slate-50/50">
-                                <td className="px-5 py-4 font-medium text-slate-800">{eq.name}</td>
-                                <td className="px-5 py-4 text-slate-500">{eq.serial}</td>
-                                <td className="px-5 py-4 text-slate-500">{eq.location}</td>
-                                <td className="px-5 py-4">
-                                    <span className={`text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wide ${
-                                        eq.status === 'Active'
-                                            ? 'bg-emerald-100 text-emerald-700'
-                                            : 'bg-amber-100 text-amber-600'
-                                    }`}>{eq.status}</span>
-                                </td>
-                                <td className="px-5 py-4">
-                                    <button onClick={() => setModal({ type: 'edit-eq', item: eq })}
-                                        className="text-[#3B82F6] hover:text-[#2563EB]">
-                                        <Pencil className="w-4 h-4" />
-                                    </button>
-                                </td>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-sm min-w-[600px]">
+                        <thead>
+                            <tr className="border-b border-slate-100 bg-slate-50/50">
+                                {['Device Name','Serial No.','Location','Status','Action'].map(h => (
+                                    <th key={h} className="px-5 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">{h}</th>
+                                ))}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="divide-y divide-slate-50">
+                            {equipment.map((eq, i) => (
+                                <tr key={i} className="hover:bg-slate-50/50">
+                                    <td className="px-5 py-4 font-medium text-slate-800 whitespace-nowrap">{eq.name}</td>
+                                    <td className="px-5 py-4 text-slate-500 whitespace-nowrap">{eq.serial}</td>
+                                    <td className="px-5 py-4 text-slate-500 whitespace-nowrap">{eq.location}</td>
+                                    <td className="px-5 py-4 whitespace-nowrap">
+                                        <span className={`text-[10px] font-bold px-2.5 py-1 rounded uppercase tracking-wide ${
+                                            eq.status === 'Active'
+                                                ? 'bg-emerald-100 text-emerald-700'
+                                                : 'bg-amber-100 text-amber-600'
+                                        }`}>{eq.status}</span>
+                                    </td>
+                                    <td className="px-5 py-4">
+                                        <button onClick={() => setModal({ type: 'edit-eq', item: eq })}
+                                            className="text-[#3B82F6] hover:text-[#2563EB]">
+                                            <Pencil className="w-4 h-4" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             {/* Weighing Scales */}
@@ -401,66 +403,68 @@ function MaterialsConfigTargets() {
                         <Plus className="w-3.5 h-3.5" /> Add Material
                     </button>
                 </div>
-                <table className="w-full text-sm">
-                    <thead>
-                        <tr className="border-b border-slate-100 bg-slate-50/50">
-                            {['Material Type', 'Buying Price (₦/KG)', 'Selling Price (₦/KG)', 'Margin(%)', 'Status', 'Actions'].map(h => (
-                                <th key={h} className="px-5 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">{h}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-50">
-                        {materials.map((m, i) => {
-                            const margin = calcMargin(m.buying, m.selling)
-                            const isEdit = editIdx === i
-                            return (
-                                <tr key={i} className="hover:bg-slate-50/50">
-                                    <td className="px-5 py-4 font-medium text-slate-800">{m.name}</td>
-                                    <td className="px-5 py-4">
-                                        {isEdit
-                                            ? <input type="number" value={m.buying}
-                                                onChange={e => setMaterials(p => p.map((x, j) => j === i ? { ...x, buying: Number(e.target.value) } : x))}
-                                                className="w-20 px-2 py-1 border border-slate-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-100" />
-                                            : <span className="px-2 py-1 border border-slate-200 rounded text-slate-600 text-sm">{m.buying}</span>
-                                        }
-                                    </td>
-                                    <td className="px-5 py-4">
-                                        {isEdit
-                                            ? <input type="number" value={m.selling}
-                                                onChange={e => setMaterials(p => p.map((x, j) => j === i ? { ...x, selling: Number(e.target.value) } : x))}
-                                                className="w-20 px-2 py-1 border border-slate-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-100" />
-                                            : <span className="px-2 py-1 border border-slate-200 rounded text-slate-600 text-sm">{m.selling}</span>
-                                        }
-                                    </td>
-                                    <td className="px-5 py-4">
-                                        <span className={`font-bold text-sm ${margin >= 40 ? 'text-emerald-600' : 'text-amber-500'}`}>{margin}%</span>
-                                    </td>
-                                    <td className="px-5 py-4">
-                                        <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide flex items-center gap-1 w-fit ${
-                                            m.status === 'Stable' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-600'
-                                        }`}>
-                                            <span className={`w-1.5 h-1.5 rounded-full ${m.status === 'Stable' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                                            {m.status}
-                                        </span>
-                                    </td>
-                                    <td className="px-5 py-4">
-                                        <button onClick={() => setEditIdx(isEdit ? null : i)}
-                                            className="text-[#3B82F6] hover:text-[#2563EB]">
-                                            <Pencil className="w-4 h-4" />
-                                        </button>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-sm min-w-[700px]">
+                        <thead>
+                            <tr className="border-b border-slate-100 bg-slate-50/50">
+                                {['Material Type', 'Buying Price (₦/KG)', 'Selling Price (₦/KG)', 'Margin(%)', 'Status', 'Actions'].map(h => (
+                                    <th key={h} className="px-5 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">{h}</th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-50">
+                            {materials.map((m, i) => {
+                                const margin = calcMargin(m.buying, m.selling)
+                                const isEdit = editIdx === i
+                                return (
+                                    <tr key={i} className="hover:bg-slate-50/50">
+                                        <td className="px-5 py-4 font-medium text-slate-800 whitespace-nowrap">{m.name}</td>
+                                        <td className="px-5 py-4 whitespace-nowrap">
+                                            {isEdit
+                                                ? <input type="number" value={m.buying}
+                                                    onChange={e => setMaterials(p => p.map((x, j) => j === i ? { ...x, buying: Number(e.target.value) } : x))}
+                                                    className="w-20 px-2 py-1 border border-slate-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-100" />
+                                                : <span className="px-2 py-1 border border-slate-200 rounded text-slate-600 text-sm">{m.buying}</span>
+                                            }
+                                        </td>
+                                        <td className="px-5 py-4 whitespace-nowrap">
+                                            {isEdit
+                                                ? <input type="number" value={m.selling}
+                                                    onChange={e => setMaterials(p => p.map((x, j) => j === i ? { ...x, selling: Number(e.target.value) } : x))}
+                                                    className="w-20 px-2 py-1 border border-slate-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-100" />
+                                                : <span className="px-2 py-1 border border-slate-200 rounded text-slate-600 text-sm">{m.selling}</span>
+                                            }
+                                        </td>
+                                        <td className="px-5 py-4 whitespace-nowrap">
+                                            <span className={`font-bold text-sm ${margin >= 40 ? 'text-emerald-600' : 'text-amber-500'}`}>{margin}%</span>
+                                        </td>
+                                        <td className="px-5 py-4 whitespace-nowrap">
+                                            <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide flex items-center gap-1 w-fit ${
+                                                m.status === 'Stable' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-600'
+                                            }`}>
+                                                <span className={`w-1.5 h-1.5 rounded-full ${m.status === 'Stable' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                                                {m.status}
+                                            </span>
+                                        </td>
+                                        <td className="px-5 py-4">
+                                            <button onClick={() => setEditIdx(isEdit ? null : i)}
+                                                className="text-[#3B82F6] hover:text-[#2563EB]">
+                                                <Pencil className="w-4 h-4" />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             {/* Production Targets */}
             <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
                 <h2 className="text-base font-bold text-slate-900 mb-1">Production Targets</h2>
                 <p className="text-xs text-slate-400 mb-5">Set operational goals for logistics and processing facilities.</p>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Inbound */}
                     <div className="border border-slate-200 rounded-xl p-4">
                         <div className="flex items-center gap-3 mb-4">
@@ -529,7 +533,7 @@ function MaterialsConfigTargets() {
 
             {/* Market Trends */}
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                <div className="flex">
+                <div className="flex flex-col sm:flex-row">
                     <div className="flex-1 p-6 flex items-start gap-4">
                         <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
                             <TrendingUp className="w-5 h-5 text-slate-500" />
@@ -539,7 +543,7 @@ function MaterialsConfigTargets() {
                             <p className="text-xs text-slate-500">PET prices increased by 4% across regional recycling hubs this week.</p>
                         </div>
                     </div>
-                    <div className="w-56 bg-slate-50 border-l border-slate-100 flex flex-col items-center justify-center gap-3 p-6">
+                    <div className="w-full sm:w-56 bg-slate-50 border-t sm:border-t-0 sm:border-l border-slate-100 flex flex-col items-center justify-center gap-3 p-6">
                         <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
                             <PiggyBank className="w-6 h-6 text-amber-500" />
                         </div>
@@ -704,44 +708,44 @@ function TeamManagement() {
     return (
         <div className="space-y-5">
             {/* Header */}
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
                 <div>
                     <h2 className="text-xl font-bold text-slate-900">Team Profiles</h2>
                     <p className="text-sm text-slate-400 mt-0.5">Manage internal staff, permissions, and operational access across the EcoLyft ecosystem.</p>
                 </div>
                 <button onClick={() => setShowInvite(true)}
-                    className="bg-amber-400 hover:bg-amber-500 text-white text-sm font-bold px-4 py-2.5 rounded-lg transition-colors flex items-center gap-2 flex-shrink-0">
+                    className="w-full sm:w-auto bg-amber-400 hover:bg-amber-500 text-white text-sm font-bold px-4 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 flex-shrink-0">
                     <UserPlus className="w-4 h-4" /> Invite New Member
                 </button>
             </div>
 
             {/* KPI cards */}
-            <div className="grid grid-cols-3 gap-4">
-                <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-center justify-between">
+            <div className="grid grid-cols-3 gap-2 md:gap-4">
+                <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-2">
                     <div>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Team Members</p>
-                        <p className="text-3xl font-bold text-slate-900">{totalMembers}</p>
+                        <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Members</p>
+                        <p className="text-xl md:text-3xl font-bold text-slate-900 leading-none">{totalMembers}</p>
                     </div>
-                    <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
-                        <Users className="w-6 h-6 text-[#3B82F6]" />
+                    <div className="w-8 h-8 md:w-12 md:h-12 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Users className="w-4 h-4 md:w-6 md:h-6 text-[#3B82F6]" />
                     </div>
                 </div>
-                <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-center justify-between">
+                <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-2">
                     <div>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Active Seats</p>
-                        <p className="text-3xl font-bold text-emerald-600">{activeSeats}</p>
+                        <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Active Seats</p>
+                        <p className="text-xl md:text-3xl font-bold text-emerald-600 leading-none">{activeSeats}</p>
                     </div>
-                    <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center">
-                        <CheckCircle2 className="w-6 h-6 text-emerald-500" />
+                    <div className="w-8 h-8 md:w-12 md:h-12 bg-emerald-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <CheckCircle2 className="w-4 h-4 md:w-6 md:h-6 text-emerald-500" />
                     </div>
                 </div>
-                <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-center justify-between">
+                <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-2">
                     <div>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pending Invites</p>
-                        <p className="text-3xl font-bold text-amber-500">{pendingInvites}</p>
+                        <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pending</p>
+                        <p className="text-xl md:text-3xl font-bold text-amber-500 leading-none">{pendingInvites}</p>
                     </div>
-                    <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center">
-                        <AlertTriangle className="w-6 h-6 text-amber-400" />
+                    <div className="w-8 h-8 md:w-12 md:h-12 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <AlertTriangle className="w-4 h-4 md:w-6 md:h-6 text-amber-400" />
                     </div>
                 </div>
             </div>
@@ -1027,37 +1031,39 @@ export const Settings: React.FC = () => {
     return (
         <div className="w-full pb-24">
             <h1 className="text-2xl font-bold text-slate-900 mb-1">Settings</h1>
-            <p className="text-sm text-slate-500 mb-8">Configure your facility, materials, and production goals.</p>
+            <p className="text-sm text-slate-500 mb-8 px-1">Configure your facility, materials, and production goals.</p>
 
-            <div className="flex gap-8 items-start">
-                {/* Sidebar */}
-                <div className="w-44 flex-shrink-0 space-y-1">
-                    {NAV_ITEMS.map(item => (
-                        <button
-                            key={item}
-                            onClick={() => setActiveNav(item)}
-                            className={`w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                                activeNav === item
-                                    ? 'bg-white border border-slate-200 text-[#3B82F6] font-bold shadow-sm'
-                                    : 'text-slate-500 hover:text-slate-700'
-                            }`}
-                        >
-                            {item}
-                        </button>
-                    ))}
+            <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
+                {/* Sidebar / Navigation */}
+                <div className="w-full lg:w-44 flex-shrink-0 overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
+                    <div className="flex lg:flex-col gap-2 min-w-max lg:min-w-0">
+                        {NAV_ITEMS.map(item => (
+                            <button
+                                key={item}
+                                onClick={() => setActiveNav(item)}
+                                className={`whitespace-nowrap px-4 py-2.5 rounded-lg text-sm font-medium transition-colors border ${
+                                    activeNav === item
+                                        ? 'bg-white border-slate-200 text-[#3B82F6] font-bold shadow-sm'
+                                        : 'text-slate-500 hover:text-slate-700 border-transparent'
+                                }`}
+                            >
+                                {item}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 space-y-5">
+                <div className="flex-1 w-full space-y-5">
                     {activeNav === 'Equipment Registry' && <EquipmentRegistry />}
                     {activeNav === 'Materials Config & Targets' && <MaterialsConfigTargets />}
                     {activeNav === 'Team Management' && <TeamManagement />}
                     {activeNav === 'FAQ & Customer Support' && <FaqSupport />}
                     {activeNav === 'Company Profile' && (<>
                     {/* Company Profile Card */}
-                    <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                    <div className="bg-white border border-slate-200 rounded-xl p-4 md:p-6 shadow-sm">
                         <h2 className="text-base font-bold text-slate-900 mb-5">Company Profile</h2>
-                        <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label className="text-xs text-slate-600 mb-1.5 block">Business Name</label>
                                 <input
@@ -1118,17 +1124,17 @@ export const Settings: React.FC = () => {
                     </div>
 
                     {/* Material Types Card */}
-                    <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-                        <div className="flex items-center justify-between mb-5">
+                    <div className="bg-white border border-slate-200 rounded-xl p-4 md:p-6 shadow-sm">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-5">
                             <div className="flex items-center gap-2">
                                 <Recycle className="w-4 h-4 text-[#3B82F6]" />
                                 <h2 className="text-base font-bold text-slate-900">Material Types</h2>
                             </div>
-                            <button className="bg-[#3B82F6] hover:bg-[#2563EB] text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors">
+                            <button className="w-full sm:w-auto bg-[#3B82F6] hover:bg-[#2563EB] text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors">
                                 Manage Materials
                             </button>
                         </div>
-                        <div className="grid grid-cols-3 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                             {Object.entries(MATERIAL_ICONS).map(([name, style]) => (
                                 <div key={name} className="flex items-center gap-3 border border-slate-200 rounded-lg p-3">
                                     <div className={`w-8 h-8 rounded-lg ${style.bg} ${style.color} flex items-center justify-center text-base flex-shrink-0`}>
@@ -1149,9 +1155,9 @@ export const Settings: React.FC = () => {
                     </div>
 
                     {/* Bank + Payment Plan row */}
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         {/* NUBAN Bank Details */}
-                        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                        <div className="bg-white border border-slate-200 rounded-xl p-4 md:p-6 shadow-sm">
                             <div className="flex items-center gap-2 mb-5">
                                 <Landmark className="w-4 h-4 text-[#3B82F6]" />
                                 <h2 className="text-base font-bold text-slate-900">NUBAN (Bank Details)</h2>
@@ -1177,7 +1183,7 @@ export const Settings: React.FC = () => {
                         </div>
 
                         {/* Payment Plan */}
-                        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                        <div className="bg-white border border-slate-200 rounded-xl p-4 md:p-6 shadow-sm">
                             <div className="flex items-center gap-2 mb-5">
                                 <CreditCard className="w-4 h-4 text-[#3B82F6]" />
                                 <h2 className="text-base font-bold text-slate-900">Payment Plan</h2>
@@ -1197,14 +1203,14 @@ export const Settings: React.FC = () => {
                     </div>
                     </>)}
                 </div>
-                </div>
+            </div>
 
             {/* Sticky footer */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-8 py-4 flex justify-end gap-3 z-10">
-                <button className="px-6 py-2.5 border border-slate-300 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-50 transition-colors">
-                    Discard Changes
+            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-4 md:px-8 py-4 flex justify-end gap-3 z-10">
+                <button className="flex-1 sm:flex-none px-6 py-2.5 border border-slate-300 rounded-lg text-sm font-semibold text-slate-500 hover:bg-slate-50 transition-colors">
+                    Discard
                 </button>
-                <button className="px-6 py-2.5 bg-[#3B82F6] hover:bg-[#2563EB] text-white rounded-lg text-sm font-bold transition-colors shadow-sm">
+                <button className="flex-1 sm:flex-none px-6 py-2.5 bg-[#3B82F6] hover:bg-[#2563EB] text-white rounded-lg text-sm font-bold transition-colors shadow-sm">
                     Save Profile
                 </button>
             </div>

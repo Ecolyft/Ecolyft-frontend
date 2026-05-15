@@ -15,18 +15,18 @@ export const BuyerList: React.FC = () => {
         <div className="space-y-8 w-full max-w-5xl mx-auto pb-12">
             {/* Header & Tabs */}
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-0">
-                <div className="flex gap-8">
-                    <Link to="/collectors" className="pb-2 text-[20px] font-medium text-slate-500 hover:text-slate-700">
+                <div className="flex gap-6 md:gap-8">
+                    <Link to="/collectors" className="pb-2 text-[18px] md:text-[20px] font-medium text-slate-500 hover:text-slate-700 whitespace-nowrap">
                         Suppliers
                     </Link>
                     <div className="border-b-2 border-slate-900 pb-2">
-                        <h1 className="text-[20px] font-bold text-slate-900">Buyers</h1>
+                        <h1 className="text-[18px] md:text-[20px] font-bold text-slate-900 whitespace-nowrap">Buyers</h1>
                     </div>
                 </div>
-                <div className="pb-4">
+                <div className="pb-4 w-full sm:w-auto">
                     <button
                         onClick={() => navigate({ to: '/buyers/new' })}
-                        className="bg-[#4285F4] text-white px-5 py-2.5 rounded-lg text-[14px] font-bold shadow-sm hover:bg-[#3367D6] transition-colors flex items-center gap-2"
+                        className="w-full sm:w-auto bg-[#4285F4] text-white px-5 py-2.5 rounded-lg text-[14px] font-bold shadow-sm hover:bg-[#3367D6] transition-colors flex items-center justify-center gap-2"
                     >
                         <Plus className="w-4 h-4" /> Add New Buyer
                     </button>
@@ -43,7 +43,7 @@ export const BuyerList: React.FC = () => {
             </div>
 
             {/* KPI Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                 <div className="bg-white rounded-xl border border-slate-100 p-6 shadow-sm border-l-[4px] border-l-[#1E40AF]">
                     <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Total Partners</p>
                     <div className="flex items-end gap-2">
@@ -119,16 +119,16 @@ export const BuyerList: React.FC = () => {
                                     onClick={() => navigate({ to: '/buyers/$buyerId', params: { buyerId: String(i + 1) } })}
                                     className="hover:bg-slate-50/50 cursor-pointer transition-colors"
                                 >
-                                    <td className="px-6 py-4 font-bold text-slate-900">{row.company}</td>
-                                    <td className="px-6 py-4">
+                                    <td className="px-6 py-4 font-bold text-slate-900 whitespace-nowrap">{row.company}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
                                         <span className="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-[4px] text-[11px] font-medium">
                                             {row.material}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 text-slate-700 text-right">{row.volume}</td>
-                                    <td className="px-6 py-4 text-slate-700 text-right">{row.price}</td>
-                                    <td className="px-6 py-4 font-bold text-[#3B82F6] text-right">{row.ltv}</td>
-                                    <td className="px-6 py-4">
+                                    <td className="px-6 py-4 text-slate-700 text-right whitespace-nowrap">{row.volume}</td>
+                                    <td className="px-6 py-4 text-slate-700 text-right whitespace-nowrap">{row.price}</td>
+                                    <td className="px-6 py-4 font-bold text-[#3B82F6] text-right whitespace-nowrap">{row.ltv}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`px-2 py-0.5 rounded-[4px] text-[10px] font-bold tracking-wider uppercase ${row.statusColor}`}>
                                             {row.status}
                                         </span>
