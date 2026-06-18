@@ -73,64 +73,64 @@ export const LogProcessing: React.FC = () => {
     const subtitle = 'Split inbound material into output fractions'
 
     return (
-        <div className="space-y-6 w-full">
-
-            <div className="flex gap-6 w-full">
+        <div className="space-y-6 w-full max-w-7xl mx-auto">
+            <div className="flex flex-col lg:flex-row gap-6 w-full">
                 {/* Form */}
                 <div className="flex-1 min-w-0">
-                    <h1 className="text-2xl font-bold text-slate-800 mb-1">{title}</h1>
-                    <p className="text-sm text-slate-500 mb-5">{subtitle}</p>
+                    <h1 className="text-3xl font-extrabold text-slate-800 mb-1 font-display tracking-tight">{title}</h1>
+                    <p className="text-sm font-semibold text-slate-500 mb-5">{subtitle}</p>
 
-                    <div className="bg-white rounded-xl border border-slate-200 p-6 space-y-5">
+                    <div className="bg-white rounded-[24px] border border-slate-100 p-6 md:p-8 shadow-sm space-y-6">
                         {/* Select batch */}
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-700">Select batch</label>
+                            <label htmlFor="batchSelect" className="text-sm font-bold text-slate-700">Select batch</label>
                             <div className="relative">
                                 <select
+                                    id="batchSelect"
                                     value={batch}
                                     onChange={e => setBatch(e.target.value)}
-                                    className="w-full px-4 py-3 border border-slate-200 rounded-lg appearance-none bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue"
+                                    className="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-xl appearance-none text-slate-700 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-brand-blue transition-all"
                                 >
                                     {BATCHES.map(b => <option key={b}>{b}</option>)}
                                 </select>
-                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
                             </div>
                         </div>
+
+                        {/* Input weight */}
+                        <div className="space-y-2">
+                            <label htmlFor="inputWeight" className="text-sm font-bold text-slate-700">Input weight</label>
+                            <input
+                                type="text"
+                                id="inputWeight"
+                                defaultValue={inputWeight}
+                                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-700 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-brand-blue transition-all"
+                            />
+                        </div>
+
+                        {/* Output fractions / Outcome */}
+                        <div className="space-y-4 relative">
+                            <label className="text-sm font-bold text-slate-500 uppercase tracking-wider">
+                                MATERIAL OUTCOME
+                            </label>
+                            <OutputLines lines={washLines} setLines={setWashLines} />
+                        </div>
+
+                        <button
+                            onClick={() => navigate({ to: '/batches' })}
+                            className="w-full bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/10 active:scale-[0.99] transition-all"
+                        >
+                            Record Throughput
+                        </button>
                     </div>
-
-                    {/* Input weight */}
-                    <div className="space-y-1.5 mt-5">
-                        <label className="text-sm font-medium text-slate-700">Input weight</label>
-                        <input
-                            type="text"
-                            defaultValue={inputWeight}
-                            className="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue"
-                        />
-                    </div>
-
-                    {/* Output fractions / Outcome */}
-                    <div className="space-y-2 relative">
-                        <label className="text-sm font-bold text-slate-500 uppercase tracking-wide">
-                            MATERIAL OUTCOME
-                        </label>
-                        <OutputLines lines={washLines} setLines={setWashLines} />
-
-                    </div>
-
-                    <button
-                        onClick={() => navigate({ to: '/batches' })}
-                        className="w-full bg-brand-blue text-white font-semibold py-3.5 rounded-lg hover:bg-brand-blue/90 transition-all"
-                    >
-                        Record Throughput
-                    </button>
                 </div>
 
                 {/* Stats sidebar */}
-                <div className="w-64 flex-shrink-0 space-y-4">
+                <div className="w-full lg:w-64 flex-shrink-0 space-y-4">
                     {statCards.map(card => (
-                        <div key={card.label} className={`rounded-xl border p-5 ${card.color}`}>
+                        <div key={card.label} className={`rounded-2xl border p-5 shadow-sm ${card.color}`}>
                             <p className="text-[10px] font-bold text-slate-500 uppercase mb-2 leading-none tracking-wider">{card.label}</p>
-                            <p className={`text-2xl font-black ${card.valueColor} leading-none`}>
+                            <p className={`text-2xl font-black ${card.valueColor} leading-none font-display`}>
                                 {card.value}
                                 {card.sub && !card.expected && <span className="text-sm font-bold text-slate-300 ml-1"> {card.sub}</span>}
                             </p>
@@ -145,27 +145,29 @@ export const LogProcessing: React.FC = () => {
                     ))}
 
                     {/* Contamination */}
-                    <div className="bg-red-50/50 border border-red-100 rounded-xl p-5">
+                    <div className="bg-red-50/50 border border-red-100 rounded-2xl p-5 shadow-sm">
                         <p className="text-[10px] font-bold text-red-800/60 uppercase mb-3 tracking-wider">CONTAMINATION RATED</p>
                         <div className="space-y-1.5">
                             {['rPET 7%', 'HDPE 5%', 'PP 9%', 'METALS 6.3%', 'Waste 19%'].map(l => (
-                                <p key={l} className="text-sm font-black text-red-600">{l}</p>
+                                <p key={l} className="text-sm font-bold text-red-600">{l}</p>
                             ))}
                         </div>
                     </div>
 
                     {/* Available to process */}
-                    <div className="bg-red-50/50 border border-red-100 rounded-xl p-5">
+                    <div className="bg-red-50/50 border border-red-100 rounded-2xl p-5 shadow-sm">
                         <p className="text-[10px] font-bold text-red-800/60 uppercase mb-2 tracking-wider">AVAILABLE TO PROCESS</p>
-                        <p className="text-2xl font-black text-red-600 flex items-center leading-none">
+                        <p className="text-2xl font-black text-red-600 flex items-center leading-none font-display">
                             <span className="text-sm mr-2 opacity-40">📈</span>
                             85,067 KG
                         </p>
                     </div>
 
-                    <button className="w-full text-xs font-bold text-slate-400 hover:text-slate-600 text-right pr-2">
-                        Download Report
-                    </button>
+                    <div className="flex justify-end pr-1">
+                        <button className="text-xs font-bold text-slate-500 hover:text-slate-700 transition-colors">
+                            Download Report
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
