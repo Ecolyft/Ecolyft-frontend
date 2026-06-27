@@ -1,13 +1,23 @@
 import React, { useState } from 'react'
-import { Recycle, Landmark, CreditCard, X, Plus, Wrench, AlertTriangle, CheckCircle2, MoreVertical, Pencil, CloudUpload, Scale, TrendingUp, Truck, BarChart2, PiggyBank, Users, Shield, UserPlus, ChevronDown, Zap, LayoutGrid, List, ChevronLeft, ChevronRight, Eye } from 'lucide-react'
+import { Recycle, Landmark, CreditCard, X, Plus, Wrench, AlertTriangle, CheckCircle2, MoreVertical, Pencil, CloudUpload, Scale, TrendingUp, Truck, BarChart2, PiggyBank, Users, Shield, UserPlus, ChevronDown, Zap, LayoutGrid, List, ChevronLeft, Eye, Sliders, Briefcase, Hourglass } from 'lucide-react'
+import { Pricing } from './Pricing'
 
 // ── Modals ──────────────────────────────────────────────────────────────────
 
-interface EquipmentForm { name: string; serial: string; location: string; status: 'Active' | 'Maintenance' }
+interface EquipmentForm {
+    name: string
+    manufacturer: string
+    serial: string
+    capacity: string
+    consumption: string
+    energySource: string
+    location: string
+    status: 'Active' | 'Maintenance'
+}
 interface ScaleForm { id: string; type: 'Inbound' | 'Outbound'; lastCal: string; nextCal: string }
 
 const MODAL_OVERLAY = 'fixed inset-0 bg-black/40 flex items-center justify-center z-50'
-const MODAL_BOX = 'bg-white rounded-2xl shadow-2xl w-full max-w-md p-6'
+const MODAL_BOX = 'bg-white rounded-2xl shadow-2xl w-full max-w-[420px] p-6 max-h-[90vh] overflow-y-auto scrollbar-hide'
 
 function EquipmentModal({ title, initial, onClose, onSave }: {
     title: string
@@ -17,7 +27,11 @@ function EquipmentModal({ title, initial, onClose, onSave }: {
 }) {
     const [form, setForm] = useState<EquipmentForm>({
         name: initial?.name ?? '',
+        manufacturer: initial?.manufacturer ?? '',
         serial: initial?.serial ?? '',
+        capacity: initial?.capacity ?? '',
+        consumption: initial?.consumption ?? '',
+        energySource: initial?.energySource ?? '',
         location: initial?.location ?? 'Warehouse A-1',
         status: initial?.status ?? 'Active',
     })
@@ -26,53 +40,132 @@ function EquipmentModal({ title, initial, onClose, onSave }: {
     return (
         <div className={MODAL_OVERLAY} onClick={onClose}>
             <div className={MODAL_BOX} onClick={e => e.stopPropagation()}>
+                {/* Title & Close button */}
                 <div className="flex items-center justify-between mb-5">
-                    <h2 className="text-base font-bold text-slate-900">{title}</h2>
-                    <button onClick={onClose}><X className="w-5 h-5 text-slate-400 hover:text-slate-600" /></button>
+                    <h2 className="text-lg font-bold text-slate-800 font-display">{title}</h2>
+                    <button onClick={onClose}>
+                        <X className="w-5 h-5 text-slate-400 hover:text-slate-600" />
+                    </button>
                 </div>
+                
+                {/* Inputs block */}
                 <div className="space-y-4">
                     <div>
-                        <label className="text-xs text-slate-600 mb-1 block">Equipment Name</label>
-                        <input value={form.name} onChange={e => set('name', e.target.value)}
-                            placeholder="e.g. Electric Pallet Jack"
-                            className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#3B82F6]" />
+                        <label className="text-xs font-semibold text-slate-600 mb-1 block">Equipment Type</label>
+                        <input
+                            value={form.name}
+                            onChange={e => set('name', e.target.value)}
+                            placeholder="e.g. Electric Baler"
+                            className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-brand-blue transition-all"
+                        />
                     </div>
                     <div>
-                        <label className="text-xs text-slate-600 mb-1 block">Serial Number</label>
-                        <input value={form.serial} onChange={e => set('serial', e.target.value)}
-                            placeholder="SN-XXXX-XXXX"
-                            className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#3B82F6]" />
+                        <label className="text-xs font-semibold text-slate-600 mb-1 block">Manufacturer</label>
+                        <input
+                            value={form.manufacturer}
+                            onChange={e => set('manufacturer', e.target.value)}
+                            placeholder="e.g. sully"
+                            className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-brand-blue transition-all"
+                        />
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div>
+                        <label className="text-xs font-semibold text-slate-600 mb-1 block">Serial Number</label>
+                        <input
+                            value={form.serial}
+                            onChange={e => set('serial', e.target.value)}
+                            placeholder="SN-XXXX-XXXX"
+                            className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-brand-blue transition-all"
+                        />
+                    </div>
+                    <div>
+                        <label className="text-xs font-semibold text-slate-600 mb-1 block">Processing Capacity</label>
+                        <input
+                            value={form.capacity}
+                            onChange={e => set('capacity', e.target.value)}
+                            placeholder="e.g. 2000kg / hr"
+                            className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-brand-blue transition-all"
+                        />
+                    </div>
+                    <div>
+                        <label className="text-xs font-semibold text-slate-600 mb-1 block">Energy Consumption</label>
+                        <input
+                            value={form.consumption}
+                            onChange={e => set('consumption', e.target.value)}
+                            placeholder="e.g. 50 KWh"
+                            className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-brand-blue transition-all"
+                        />
+                    </div>
+                    <div>
+                        <label className="text-xs font-semibold text-slate-600 mb-1 block">Energy Energy Source</label>
+                        <input
+                            value={form.energySource}
+                            onChange={e => set('energySource', e.target.value)}
+                            placeholder="e.g. Grid Electricity"
+                            className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-brand-blue transition-all"
+                        />
+                    </div>
+                    
+                    {/* Location & Status in 2 columns */}
+                    <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="text-xs text-slate-600 mb-1 block">Location</label>
-                            <select value={form.location} onChange={e => set('location', e.target.value)}
-                                className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-100">
-                                {['Warehouse A-1','Warehouse A-4','Processing Hall A','Sorting Area','Main Intake'].map(l => <option key={l}>{l}</option>)}
-                            </select>
+                            <label className="text-xs font-semibold text-slate-600 mb-1 block">Location</label>
+                            <div className="relative">
+                                <select
+                                    value={form.location}
+                                    onChange={e => set('location', e.target.value)}
+                                    className="w-full pl-3 pr-8 py-2.5 border border-slate-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 appearance-none font-semibold text-slate-700"
+                                >
+                                    {['Warehouse A-1', 'Warehouse A-4', 'Processing Hall A', 'Sorting Area', 'Main Intake'].map(l => (
+                                        <option key={l}>{l}</option>
+                                    ))}
+                                </select>
+                                <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                            </div>
                         </div>
                         <div>
-                            <label className="text-xs text-slate-600 mb-1 block">Initial Status</label>
-                            <div className="flex border border-slate-200 rounded-lg overflow-hidden text-sm font-semibold">
-                                {(['Active','Maintenance'] as const).map(s => (
-                                    <button key={s} onClick={() => set('status', s)}
-                                        className={`flex-1 py-2.5 transition-colors ${form.status === s ? 'bg-[#3B82F6] text-white' : 'text-slate-400 hover:bg-slate-50'}`}>
-                                        {s}
-                                    </button>
-                                ))}
+                            <label className="text-xs font-semibold text-slate-600 mb-1 block">Initial Status</label>
+                            <div className="flex bg-slate-100 p-0.5 rounded-lg text-xs font-semibold border border-slate-200">
+                                {(['Active', 'Maintenance'] as const).map(s => {
+                                    const active = form.status === s
+                                    return (
+                                        <button
+                                            key={s}
+                                            type="button"
+                                            onClick={() => set('status', s)}
+                                            className={`flex-1 py-2 text-center rounded-md transition-all ${
+                                                active
+                                                    ? 'bg-white text-brand-blue shadow-sm font-bold'
+                                                    : 'text-slate-400 hover:text-slate-600'
+                                            }`}
+                                        >
+                                            {s}
+                                        </button>
+                                    )
+                                })}
                             </div>
                         </div>
                     </div>
-                    <div className="border border-dashed border-slate-200 rounded-lg py-6 flex flex-col items-center gap-2 text-slate-400 cursor-pointer hover:border-[#3B82F6] transition-colors">
+
+                    {/* Upload Reference Photo */}
+                    <div className="border border-dashed border-slate-200 bg-slate-50/50 rounded-xl py-6 flex flex-col items-center gap-2 text-slate-400 cursor-pointer hover:border-brand-blue hover:text-brand-blue transition-colors">
                         <CloudUpload className="w-6 h-6" />
-                        <span className="text-[11px] font-bold uppercase tracking-widest">Upload Reference Photo</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest">Upload Reference Photo</span>
                     </div>
                 </div>
-                <div className="flex items-center justify-end gap-3 mt-6">
-                    <button onClick={onClose} className="text-sm font-semibold text-slate-500 hover:text-slate-700">Cancel</button>
-                    <button onClick={() => onSave(form)}
-                        className="bg-[#3B82F6] hover:bg-[#2563EB] text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-colors">
-                        {initial?.name ? 'Update Equipment' : 'Save Equipment'}
+
+                {/* Footer Buttons */}
+                <div className="flex items-center justify-end gap-4 mt-6 border-t border-slate-100 pt-4">
+                    <button
+                        onClick={onClose}
+                        className="text-sm font-bold text-slate-500 hover:text-slate-700 transition-colors"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        onClick={() => onSave(form)}
+                        className="bg-brand-blue hover:bg-[#2563EB] text-white text-sm font-bold px-6 py-2.5 rounded-lg shadow-sm transition-colors"
+                    >
+                        Save Equipment
                     </button>
                 </div>
             </div>
@@ -148,7 +241,16 @@ function ScaleModal({ title, initial, onClose, onSave }: {
 
 // ── Equipment Registry Tab ───────────────────────────────────────────────────
 
-type Equipment = { name: string; serial: string; location: string; status: 'Active' | 'Maintenance' }
+type Equipment = {
+    name: string
+    manufacturer?: string
+    serial: string
+    capacity?: string
+    consumption?: string
+    energySource?: string
+    location: string
+    status: 'Active' | 'Maintenance'
+}
 type Scale = { id: string; label: string; type: 'Inbound' | 'Outbound'; lastCal: string; calibStatus: 'Calibrated' | 'Calibration Near' }
 
 const INIT_EQUIPMENT: Equipment[] = [
@@ -564,7 +666,7 @@ function MaterialsConfigTargets() {
 
 // ── Team Management Tab ──────────────────────────────────────────────────────
 
-type TeamRole = 'Owner' | 'Operator' | 'Viewer'
+type TeamRole = 'Owner' | 'Operations' | 'Procurement' | 'Sales'
 type MemberStatus = 'Active' | 'Invited'
 
 interface TeamMember {
@@ -580,22 +682,24 @@ interface TeamMember {
 }
 
 const INIT_MEMBERS: TeamMember[] = [
-    { id: '1', name: 'Alex Rivers',    email: 'alex.rivers@ecosystems.ltd',   role: 'Owner',    status: 'Active',  lastActive: '2 mins ago',        avatar: undefined, initials: 'AR', avatarColor: 'bg-slate-700' },
-    { id: '2', name: 'Elena Martinez', email: 'e.martinez@ecosystems.ltd',    role: 'Operator', status: 'Active',  lastActive: '1 hour ago',        avatar: undefined, initials: 'EM', avatarColor: 'bg-purple-500' },
-    { id: '3', name: 'Sarah Chen',     email: 'sarah.c@ecosystems.ltd',       role: 'Viewer',   status: 'Invited', lastActive: 'Never',             avatar: undefined, initials: 'SC', avatarColor: 'bg-slate-400' },
-    { id: '4', name: 'Jordan Smyth',   email: 'j.smyth@ecosystems.ltd',       role: 'Operator', status: 'Active',  lastActive: 'Yesterday, 4:30 PM', avatar: undefined, initials: 'JS', avatarColor: 'bg-slate-600' },
+    { id: '1', name: 'Alex Rivers',    email: 'alex.rivers@ecosystems.ltd',   role: 'Owner',       status: 'Active',  lastActive: '2 mins ago',        avatar: undefined, initials: 'AR', avatarColor: 'bg-red-500' },
+    { id: '2', name: 'Elena Martinez', email: 'e.martinez@ecosystems.ltd',    role: 'Operations',  status: 'Active',  lastActive: '1 hour ago',        avatar: undefined, initials: 'EM', avatarColor: 'bg-purple-500' },
+    { id: '3', name: 'Sarah Chen',     email: 'sarah.c@ecosystems.ltd',       role: 'Procurement', status: 'Invited', lastActive: 'Never',             avatar: undefined, initials: 'SC', avatarColor: 'bg-slate-700' },
+    { id: '4', name: 'oordan Smyth',   email: 'j.smyth@ecosystems.ltd',       role: 'Sales',       status: 'Active',  lastActive: 'Yesterday, 4:30 PM', avatar: undefined, initials: 'OS', avatarColor: 'bg-slate-800' },
 ]
 
 const ROLE_ICON: Record<string, React.ReactNode> = {
-    Owner:    <Shield className="w-3 h-3" />,
-    Operator: <Zap className="w-3 h-3" />,
-    Viewer:   <Eye className="w-3 h-3" />,
+    Owner:       <Shield className="w-3 h-3 text-blue-600" />,
+    Operations:  <Sliders className="w-3 h-3 text-slate-500" />,
+    Procurement: <Eye className="w-3 h-3 text-slate-500" />,
+    Sales:       <Briefcase className="w-3 h-3 text-slate-500" />,
 }
 
 const ROLE_STYLE: Record<string, string> = {
-    Owner:    'bg-blue-50 text-blue-600 border border-blue-200',
-    Operator: 'bg-slate-100 text-slate-600 border border-slate-200',
-    Viewer:   'bg-slate-100 text-slate-500 border border-slate-200',
+    Owner:       'bg-blue-50 text-blue-600 border border-blue-100',
+    Operations:  'bg-slate-50 text-slate-600 border border-slate-200/60',
+    Procurement: 'bg-slate-50 text-slate-600 border border-slate-200/60',
+    Sales:       'bg-slate-50 text-slate-600 border border-slate-200/60',
 }
 
 function InviteMemberModal({ onClose, onSave }: { onClose: () => void; onSave: (m: TeamMember) => void }) {
@@ -656,7 +760,7 @@ function InviteMemberModal({ onClose, onSave }: { onClose: () => void; onSave: (
                                     Owner
                                     {role === 'Owner' && <CheckCircle2 className="w-4 h-4 text-[#3B82F6]" />}
                                 </button>
-                                {(['Operator', 'Viewer'] as TeamRole[]).map(r => (
+                                {(['Operations', 'Procurement', 'Sales'] as TeamRole[]).map(r => (
                                     <button key={r} onClick={() => { setRole(r); setRoleOpen(false) }}
                                         className="w-full px-4 py-3 text-left text-sm text-slate-600 hover:bg-slate-50 transition-colors border-t border-slate-100">
                                         {r}
@@ -714,38 +818,38 @@ function TeamManagement() {
                     <p className="text-sm text-slate-400 mt-0.5">Manage internal staff, permissions, and operational access across the EcoLyft ecosystem.</p>
                 </div>
                 <button onClick={() => setShowInvite(true)}
-                    className="w-full sm:w-auto bg-amber-400 hover:bg-amber-500 text-white text-sm font-bold px-4 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 flex-shrink-0">
+                    className="w-full sm:w-auto bg-[#FFA524] hover:bg-[#e08f1b] text-white text-sm font-bold px-4 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 flex-shrink-0">
                     <UserPlus className="w-4 h-4" /> Invite New Member
                 </button>
             </div>
 
             {/* KPI cards */}
-            <div className="grid grid-cols-3 gap-2 md:gap-4">
-                <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-2">
+            <div className="grid grid-cols-3 gap-4">
+                <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-center justify-between">
                     <div>
-                        <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Members</p>
-                        <p className="text-xl md:text-3xl font-bold text-slate-900 leading-none">{totalMembers}</p>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Total Team Members</p>
+                        <p className="text-3xl font-black text-slate-800 leading-none font-display">{totalMembers}</p>
                     </div>
-                    <div className="w-8 h-8 md:w-12 md:h-12 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Users className="w-4 h-4 md:w-6 md:h-6 text-[#3B82F6]" />
+                    <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0 text-brand-blue">
+                        <Users className="w-6 h-6" />
                     </div>
                 </div>
-                <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-2">
+                <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-center justify-between">
                     <div>
-                        <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Active Seats</p>
-                        <p className="text-xl md:text-3xl font-bold text-emerald-600 leading-none">{activeSeats}</p>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Active Seats</p>
+                        <p className="text-3xl font-black text-emerald-600 leading-none font-display">{activeSeats}</p>
                     </div>
-                    <div className="w-8 h-8 md:w-12 md:h-12 bg-emerald-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <CheckCircle2 className="w-4 h-4 md:w-6 md:h-6 text-emerald-500" />
+                    <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center flex-shrink-0 text-emerald-500">
+                        <CheckCircle2 className="w-6 h-6" />
                     </div>
                 </div>
-                <div className="bg-white border border-slate-200 rounded-xl p-3 md:p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-2">
+                <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex items-center justify-between">
                     <div>
-                        <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pending</p>
-                        <p className="text-xl md:text-3xl font-bold text-amber-500 leading-none">{pendingInvites}</p>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 block">Pending Invites</p>
+                        <p className="text-3xl font-black text-amber-500 leading-none font-display">{pendingInvites}</p>
                     </div>
-                    <div className="w-8 h-8 md:w-12 md:h-12 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <AlertTriangle className="w-4 h-4 md:w-6 md:h-6 text-amber-400" />
+                    <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0 text-amber-500">
+                        <Hourglass className="w-6 h-6" />
                     </div>
                 </div>
             </div>
@@ -763,7 +867,7 @@ function TeamManagement() {
                             </button>
                             {roleDropOpen && (
                                 <div className="absolute top-full left-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg z-10 w-40 overflow-hidden">
-                                    {['All Roles', 'Owner', 'Operator', 'Viewer'].map(r => (
+                                    {['All Roles', 'Owner', 'Operations', 'Procurement', 'Sales'].map(r => (
                                         <button key={r} onClick={() => { setRoleFilter(r); setRoleDropOpen(false) }}
                                             className={`w-full px-4 py-2.5 text-left text-sm transition-colors ${roleFilter === r ? 'text-[#3B82F6] font-bold bg-blue-50' : 'text-slate-600 hover:bg-slate-50'}`}>
                                             {r}
@@ -791,7 +895,7 @@ function TeamManagement() {
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <span className="text-xs text-slate-400">Displaying {filtered.length} of {totalMembers} members</span>
+                        <span className="text-xs text-slate-400 font-semibold">Displaying 10 of 124 members</span>
                         <div className="flex border border-slate-200 rounded-lg overflow-hidden">
                             <button onClick={() => setViewMode('grid')}
                                 className={`p-1.5 transition-colors ${viewMode === 'grid' ? 'bg-slate-100 text-slate-700' : 'text-slate-400 hover:bg-slate-50'}`}>
@@ -806,15 +910,15 @@ function TeamManagement() {
                 </div>
 
                 {/* Table */}
-                <table className="w-full text-sm">
+                <table className="w-full text-left text-sm">
                     <thead>
                         <tr className="border-b border-slate-100 bg-slate-50/50">
-                            {['Member Name', 'Role', 'Status', 'Last Active', 'Actions'].map(h => (
+                            {['MEMBER NAME', 'ROLE', 'STATUS', 'LAST ACTIVE'].map(h => (
                                 <th key={h} className="px-5 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-widest">{h}</th>
                             ))}
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-slate-100 text-sm">
                         {filtered.map(m => (
                             <tr key={m.id} className="hover:bg-slate-50/50">
                                 <td className="px-5 py-3.5">
@@ -829,7 +933,7 @@ function TeamManagement() {
                                     </div>
                                 </td>
                                 <td className="px-5 py-3.5">
-                                    <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full ${ROLE_STYLE[m.role]}`}>
+                                    <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full ${ROLE_STYLE[m.role]}`}>
                                         {ROLE_ICON[m.role]} {m.role}
                                     </span>
                                 </td>
@@ -839,12 +943,7 @@ function TeamManagement() {
                                         {m.status}
                                     </span>
                                 </td>
-                                <td className="px-5 py-3.5 text-sm text-slate-500">{m.lastActive}</td>
-                                <td className="px-5 py-3.5">
-                                    <button className="text-slate-400 hover:text-slate-600">
-                                        <MoreVertical className="w-4 h-4" />
-                                    </button>
-                                </td>
+                                <td className="px-5 py-3.5 text-xs text-slate-500 font-semibold">{m.lastActive}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -855,7 +954,7 @@ function TeamManagement() {
                     <button onClick={() => setPage(p => Math.max(1, p - 1))}
                         className="flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-slate-700 disabled:opacity-40"
                         disabled={page === 1}>
-                        <ChevronLeft className="w-3.5 h-3.5" /> Previous
+                        &lt; Previous
                     </button>
                     <div className="flex items-center gap-1">
                         {[1, 2, 3].map(n => (
@@ -870,11 +969,7 @@ function TeamManagement() {
                             12
                         </button>
                     </div>
-                    <button onClick={() => setPage(p => Math.min(12, p + 1))}
-                        className="flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-slate-700 disabled:opacity-40"
-                        disabled={page === 12}>
-                        Next <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
+                    <div></div>
                 </div>
             </div>
 
@@ -985,7 +1080,13 @@ function FaqSupport() {
             </div>
 
             {/* Footer */}
-            <p className="text-center text-xs text-slate-400 pb-4">© 2025 EcoLyft. All rights reserved.</p>
+            <div className="flex items-center justify-between pt-2 pb-4">
+                <p className="text-xs text-slate-400">© 2026 EcoLyft Management System.</p>
+                <div className="flex items-center gap-4 text-xs text-slate-400">
+                    <span className="hover:underline cursor-pointer hover:text-slate-600 transition-colors">System Status</span>
+                    <span className="hover:underline cursor-pointer hover:text-slate-600 transition-colors">Privacy Policy</span>
+                </div>
+            </div>
         </div>
     )
 }
@@ -993,8 +1094,9 @@ function FaqSupport() {
 const NAV_ITEMS = [
     'Company Profile',
     'Equipment Registry',
-    'Materials Config & Targets',
+    'Production Targets',
     'Team Management',
+    'Billing & Subscription',
     'FAQ & Customer Support',
 ]
 
@@ -1034,14 +1136,14 @@ export const Settings: React.FC = () => {
             <p className="text-sm text-slate-500 mb-8 px-1">Configure your facility, materials, and production goals.</p>
 
             <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
-                {/* Sidebar / Navigation */}
-                <div className="w-full lg:w-44 flex-shrink-0 overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
+                {/* Sidebar / Navigation — sticky so it stays fixed while scrolling */}
+                <div className="w-full lg:w-48 flex-shrink-0 overflow-x-auto pb-2 lg:pb-0 scrollbar-hide lg:sticky lg:top-4 lg:self-start">
                     <div className="flex lg:flex-col gap-2 min-w-max lg:min-w-0">
                         {NAV_ITEMS.map(item => (
                             <button
                                 key={item}
                                 onClick={() => setActiveNav(item)}
-                                className={`whitespace-nowrap px-4 py-2.5 rounded-lg text-sm font-medium transition-colors border ${
+                                className={`whitespace-nowrap text-left px-4 py-2.5 rounded-lg text-sm font-medium transition-colors border ${
                                     activeNav === item
                                         ? 'bg-white border-slate-200 text-[#3B82F6] font-bold shadow-sm'
                                         : 'text-slate-500 hover:text-slate-700 border-transparent'
@@ -1053,11 +1155,12 @@ export const Settings: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Content */}
-                <div className="flex-1 w-full space-y-5">
+                {/* Content — min-w-0 prevents flex child from overflowing */}
+                <div className="flex-1 w-full min-w-0 space-y-5">
                     {activeNav === 'Equipment Registry' && <EquipmentRegistry />}
-                    {activeNav === 'Materials Config & Targets' && <MaterialsConfigTargets />}
+                    {activeNav === 'Production Targets' && <MaterialsConfigTargets />}
                     {activeNav === 'Team Management' && <TeamManagement />}
+                    {activeNav === 'Billing & Subscription' && <Pricing />}
                     {activeNav === 'FAQ & Customer Support' && <FaqSupport />}
                     {activeNav === 'Company Profile' && (<>
                     {/* Company Profile Card */}
@@ -1196,7 +1299,13 @@ export const Settings: React.FC = () => {
                                 <p className="text-xs text-slate-500 mb-4">Unlimited scale connections &amp; advanced metrics</p>
                                 <div className="flex items-center justify-between">
                                     <p className="text-sm font-bold text-slate-900">₦45,000 / month</p>
-                                    <button className="text-xs font-bold text-[#3B82F6] hover:underline">Change Plan</button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveNav('Billing & Subscription')}
+                                        className="text-xs font-bold text-[#3B82F6] hover:underline"
+                                    >
+                                        Change Plan
+                                    </button>
                                 </div>
                             </div>
                         </div>

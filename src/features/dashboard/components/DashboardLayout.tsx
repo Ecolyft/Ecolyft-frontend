@@ -4,7 +4,7 @@ import {
     Menu,
     ChevronLeft,
 } from 'lucide-react'
-import { Link, useRouterState, useNavigate } from '@tanstack/react-router'
+import { Link, useRouterState } from '@tanstack/react-router'
 import { Sidebar, navItems } from './Sidebar'
 
 interface DashboardLayoutProps {
@@ -14,7 +14,6 @@ interface DashboardLayoutProps {
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const { location } = useRouterState()
-    const navigate = useNavigate()
     const currentPath = location.pathname
 
     // Define root paths where the back button should NOT show
@@ -25,24 +24,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
             {/* Top Nav */}
             <header className="h-16 flex-shrink-0 bg-white border-b border-slate-200 px-4 md:px-6 flex items-center justify-between z-40">
                 <div className="flex items-center gap-2 md:gap-3">
-                    {!isRootPath ? (
-                        <button
-                            className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors flex items-center text-slate-600"
-                            onClick={() => navigate({ to: '..' })}
-                            aria-label="Go back"
-                        >
-                            <ChevronLeft className="w-5 h-5" />
-                            <span className="hidden sm:inline text-sm font-medium ml-0.5">Back</span>
-                        </button>
-                    ) : (
-                        <button
-                            className="lg:hidden p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
-                            onClick={() => setSidebarOpen(true)}
-                            aria-label="Open menu"
-                        >
-                            <Menu className="w-5 h-5 text-slate-600" />
-                        </button>
-                    )}
+                    <button
+                        className="lg:hidden p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+                        onClick={() => setSidebarOpen(true)}
+                        aria-label="Open menu"
+                    >
+                        <Menu className="w-5 h-5 text-slate-600" />
+                    </button>
                     <Link to="/dashboard" className="flex items-center">
                         <img src="/logo/image 1.png" alt="EcoLyft" className="h-6 md:h-8 object-contain" />
                     </Link>
@@ -82,6 +70,15 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
 
                 {/* Main content */}
                 <main className="flex-1 min-w-0 w-full p-4 md:p-6 overflow-auto">
+                    {!isRootPath && (
+                        <button
+                            onClick={() => window.history.back()}
+                            className="flex items-center gap-1 text-slate-500 hover:text-slate-700 font-bold text-sm transition-colors cursor-pointer mb-6"
+                        >
+                            <ChevronLeft className="w-4 h-4" />
+                            <span>Back</span>
+                        </button>
+                    )}
                     {children}
                 </main>
             </div>

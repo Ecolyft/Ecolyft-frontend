@@ -2,117 +2,141 @@ import React from 'react'
 import { CheckCircle2 } from 'lucide-react'
 
 const STARTER_FEATURES = [
-    'Log and manage up to 50 transactions/month',
-    'Buyer payment links',
-    'Batch tracking (inbound to outbound)',
-    'Basis traceability records',
-    '1 User seat',
-    'Email Support',
+    'Material Tracking',
+    'Supplier Management',
+    'Buyer Management',
+    'Basic Traceability',
+    'P/L Visibility',
+    '1 User',
 ]
 
 const GROWTH_FEATURES = [
-    'Unlimited transactions',
-    'Full batch consolidation and tracking',
-    'Buyer payment link + weight confirmation',
-    'Verifiable traceability reports (MRV-ready)',
+    'Everything In Starter',
+    'Supplier & Buyer Intelligence',
+    'Full Traceability - DIGITAL PASSPORTS',
+    'Material & Revenue Reconciliation',
+    'Financing Readiness Report',
     'Up to 5 users',
-    'Priority support',
 ]
 
 const ENTERPRISE_FEATURES = [
     'Everything in growth',
-    'Multi-site operations',
+    'Multi-site operations (+₦35,000/mo per extra facility beyond 2)',
     'Unlimited users',
     'API integrations',
     'White-label reporting for banks and partners',
-    'Dedicated account manager',
-    'SLA-backed support',
+    'Dedicated Support',
 ]
 
 export const Pricing: React.FC = () => {
     return (
-        <div className="min-h-screen bg-[#EEF2F7] flex flex-col items-center px-6 py-16">
+        <div className="w-full flex flex-col items-center py-6">
             {/* Header */}
-            <div className="text-center mb-12">
-                <h1 className="text-4xl font-bold text-slate-900 mb-3">Control Your Money. Stop Loosing It</h1>
-                <p className="text-lg font-bold mb-1">
+            <div className="text-center mb-10 max-w-2xl px-4">
+                <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3 tracking-tight font-display">
+                    Control Your Money. Stop Losing It
+                </h1>
+                <p className="text-lg md:text-xl font-bold mb-2">
                     <span className="text-emerald-500">Start Free For 14-Days.</span>
-                    <span className="text-[#3B82F6]"> No Card Required</span>
+                    <span className="text-brand-blue"> No Card Required</span>
                 </p>
-                <p className="text-sm text-slate-500">Every batch you sell gets paid, verified, and recorded as bankable data.</p>
+                <p className="text-sm text-slate-500 font-medium">
+                    Capture every kilogram. Trace every transaction. Build financing-ready records.
+                </p>
             </div>
 
-            {/* Cards */}
-            <div className="flex items-start gap-5 w-full max-w-4xl">
+            {/* Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl px-4 items-stretch">
                 {/* Starter */}
-                <div className="flex-1 bg-white rounded-2xl p-7 shadow-sm flex flex-col">
-                    <h2 className="text-lg font-bold text-slate-900 mb-1">Starter</h2>
-                    <div className="flex items-baseline gap-1 mb-6">
-                        <span className="text-2xl font-bold text-slate-800">₦25,000</span>
-                        <span className="text-sm text-slate-400">/month</span>
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8 shadow-sm flex flex-col justify-between min-h-[500px] hover:shadow-md transition-shadow">
+                    <div>
+                        <h2 className="text-xl font-extrabold text-slate-900 mb-2 font-display">Starter</h2>
+                        <div className="flex items-baseline gap-1 mb-8">
+                            <span className="text-3xl font-black text-slate-800 font-display">₦25,000</span>
+                            <span className="text-sm text-slate-400 font-medium">/month</span>
+                        </div>
+                        <ul className="space-y-4">
+                            {STARTER_FEATURES.map(f => (
+                                <li key={f} className="flex items-start gap-2.5 text-[13px] font-semibold text-slate-600">
+                                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                                    <span>{f}</span>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
-                    <ul className="space-y-2.5 flex-1 mb-8">
-                        {STARTER_FEATURES.map(f => (
-                            <li key={f} className="flex items-start gap-2 text-sm text-slate-600">
-                                <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
-                                {f}
-                            </li>
-                        ))}
-                    </ul>
-                    <button className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold uppercase tracking-widest rounded-xl transition-colors">
+                    <button className="w-full py-3.5 bg-slate-200/70 hover:bg-slate-300 text-slate-700 text-xs font-black uppercase tracking-wider rounded-xl transition-all mt-8">
                         Select Starter
                     </button>
                 </div>
 
-                {/* Growth — recommended */}
-                <div className="flex-1 bg-[#3B82F6] rounded-2xl shadow-xl flex flex-col relative" style={{ marginTop: '-12px' }}>
+                {/* Growth - Recommended */}
+                <div className="bg-brand-blue border border-brand-blue rounded-2xl shadow-xl flex flex-col justify-between min-h-[500px] relative hover:shadow-2xl transition-all transform hover:-translate-y-1">
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                        <span className="bg-emerald-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Recommended</span>
+                        <span className="bg-[#005c30] text-white text-[9px] font-black px-4 py-1 rounded-full uppercase tracking-widest shadow-sm">
+                            Recommended
+                        </span>
                     </div>
-                    <div className="p-7 flex flex-col flex-1">
-                        <h2 className="text-lg font-bold text-white mb-1">Growth</h2>
-                        <div className="flex items-baseline gap-1 mb-6">
-                            <span className="text-3xl font-bold text-white">₦65,000</span>
-                            <span className="text-sm text-blue-200">/month</span>
+                    <div className="p-8 flex flex-col justify-between flex-1 mt-1">
+                        <div>
+                            <h2 className="text-xl font-extrabold text-white mb-2 font-display">Growth</h2>
+                            <div className="flex items-baseline gap-1 mb-8">
+                                <span className="text-3xl font-black text-white font-display">₦50,000</span>
+                                <span className="text-sm text-blue-100 font-medium">/month</span>
+                            </div>
+                            <ul className="space-y-4">
+                                {GROWTH_FEATURES.map(f => (
+                                    <li key={f} className="flex items-start gap-2.5 text-[13px] font-semibold text-white">
+                                        <CheckCircle2 className="w-4 h-4 text-white flex-shrink-0 mt-0.5" />
+                                        <span>{f}</span>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                        <ul className="space-y-2.5 flex-1 mb-8">
-                            {GROWTH_FEATURES.map(f => (
-                                <li key={f} className="flex items-start gap-2 text-sm text-white">
-                                    <CheckCircle2 className="w-4 h-4 text-white flex-shrink-0 mt-0.5" />
-                                    {f}
-                                </li>
-                            ))}
-                        </ul>
-                        <button className="w-full py-3 bg-white hover:bg-blue-50 text-[#3B82F6] text-xs font-bold uppercase tracking-widest rounded-xl transition-colors">
-                            Activate Growth →
+                        <button className="w-full py-3.5 bg-white hover:bg-slate-50 text-brand-blue text-xs font-black uppercase tracking-wider rounded-xl shadow-md transition-all mt-8 flex items-center justify-center gap-1.5">
+                            Activate Growth &rarr;
                         </button>
                     </div>
                 </div>
 
                 {/* Enterprise */}
-                <div className="flex-1 bg-white rounded-2xl p-7 shadow-sm flex flex-col">
-                    <h2 className="text-lg font-bold text-slate-900 mb-1">Enterprise</h2>
-                    <p className="text-2xl font-bold text-slate-800 mb-6">Custom Pricing</p>
-                    <ul className="space-y-2.5 flex-1 mb-8">
-                        {ENTERPRISE_FEATURES.map(f => (
-                            <li key={f} className="flex items-start gap-2 text-sm text-slate-600">
-                                <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
-                                {f}
-                            </li>
-                        ))}
-                    </ul>
-                    <button className="w-full py-3 border-2 border-[#3B82F6] text-[#3B82F6] hover:bg-blue-50 text-xs font-bold uppercase tracking-widest rounded-xl transition-colors">
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8 shadow-sm flex flex-col justify-between min-h-[500px] hover:shadow-md transition-shadow">
+                    <div>
+                        <h2 className="text-xl font-extrabold text-slate-900 mb-2 font-display">Enterprise</h2>
+                        <div className="flex items-baseline gap-1 mb-8">
+                            <span className="text-3xl font-black text-slate-800 font-display">₦100,000</span>
+                            <span className="text-sm text-slate-400 font-medium">/ month</span>
+                        </div>
+                        <ul className="space-y-4">
+                            {ENTERPRISE_FEATURES.map(f => (
+                                <li key={f} className="flex items-start gap-2.5 text-[13px] font-semibold text-slate-600">
+                                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                                    <span className="leading-tight">
+                                        {f.includes('facility') ? (
+                                            <>
+                                                Multi-site operations <span className="text-xs text-slate-400 font-medium italic">(+₦35,000/mo per extra facility beyond 2)</span>
+                                            </>
+                                        ) : (
+                                            f
+                                        )}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <button className="w-full py-3.5 border-2 border-brand-blue hover:bg-blue-50 text-brand-blue text-xs font-black uppercase tracking-wider rounded-xl transition-all mt-8">
                         Talk to Sales
                     </button>
                 </div>
             </div>
 
             {/* Testimonial */}
-            <div className="mt-16 text-center max-w-md">
-                <p className="text-sm text-slate-500 italic mb-2">
+            <div className="mt-16 text-center max-w-2xl px-4 border-t border-slate-200/60 pt-10">
+                <p className="text-sm md:text-base text-slate-500 italic mb-3 font-medium leading-relaxed">
                     "We switched to EcoLyft's Growth plan and increased our profit margin by 25% in just three months."
                 </p>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">— Adeola Okafor, Head of Ops, GreenBatch</p>
+                <p className="text-[10px] md:text-xs font-extrabold text-slate-400 uppercase tracking-widest">
+                    — Adeola Okafor, Head of Ops, Recova Nig Ltd
+                </p>
             </div>
         </div>
     )

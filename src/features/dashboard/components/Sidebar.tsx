@@ -13,8 +13,8 @@ export const navItems = [
     { icon: '/Group 47.png', label: 'Inbound', to: '/log-purchase' },
     { icon: '/Group 49.png', label: 'Throughput', to: '/log-processing' },
     { icon: '/Group 48.png', label: 'Outbound', to: '/log-sale' },
-    { icon: '/Group 42.png', label: 'Collectors', to: '/collectors' },
     { icon: '/Group 50.png', label: 'Batches', to: '/batches' },
+    { icon: '/Group 42.png', label: 'Collectors', to: '/collectors' },
     { icon: '/Group 45.png', label: 'Reports', to: '/reports' },
     { icon: '/Group 43.png', label: 'Settings', to: '/settings' },
 ]
