@@ -933,7 +933,17 @@ body {
     }
 
     .navbar-container {
-        padding: 24px 0 0 0;
+        height: 64px; /* More compact header height on mobile */
+    }
+
+    .navbar-logo-img {
+        height: 26px; /* Scaled down logo to prevent vertical layout stress */
+    }
+
+    .btn-nav {
+        padding: 8px 18px; /* Tighter button layout on mobile */
+        font-size: 13px;
+        line-height: 16px;
     }
 
     .hero-title {
