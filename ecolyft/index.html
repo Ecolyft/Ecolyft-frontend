@@ -359,8 +359,8 @@
                     }
                 });
             }, {
-                threshold: 0.1,
-                rootMargin: "0px 0px -50px 0px" // Triggers slightly before entry into viewport
+                threshold: 0.02,
+                rootMargin: "0px 0px -20px 0px" // Triggers instantly as soon as a sliver is visible
             });
 
             const revealElements = document.querySelectorAll('.reveal');
