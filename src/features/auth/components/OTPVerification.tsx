@@ -11,6 +11,7 @@ export const OTPVerification: React.FC = () => {
     const [loading, setLoading] = useState(false)
     const [resending, setResending] = useState(false)
     const [email, setEmail] = useState('')
+    const [demoOtp, setDemoOtp] = useState('')
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -20,6 +21,7 @@ export const OTPVerification: React.FC = () => {
             return
         }
         setEmail(pendingEmail)
+        setDemoOtp(authSession.getPendingDemoOtp() || '')
     }, [navigate])
 
     useEffect(() => {
@@ -65,9 +67,13 @@ export const OTPVerification: React.FC = () => {
         setError('')
         setResending(true)
         try {
-            await authApi.resendOtp({ email })
+            const result = await authApi.resendOtp({ email })
             setTimer(30)
             setOtp(['', '', '', '', '', ''])
+            if (result.demoOtp) {
+                setDemoOtp(result.demoOtp)
+                authSession.setPendingDemoOtp(result.demoOtp)
+            }
         } catch (err) {
             setError(err instanceof ApiError ? err.message : 'Could not resend code.')
         } finally {
@@ -86,6 +92,13 @@ export const OTPVerification: React.FC = () => {
                     We've sent a 6-digit verification code to <strong>{email}</strong>. Please enter it below to continue.
                 </p>
             </div>
+
+            {demoOtp && (
+                <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                    <p className="font-semibold mb-1">Demo mode — email delivery unavailable</p>
+                    <p>Your verification code is: <span className="font-mono font-bold tracking-widest">{demoOtp}</span></p>
+                </div>
+            )}
 
             <div className="space-y-6">
                 {error && (

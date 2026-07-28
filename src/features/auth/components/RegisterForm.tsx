@@ -37,8 +37,11 @@ export const RegisterForm: React.FC = () => {
 
         setLoading(true)
         try {
-            await authApi.register({ fullName, email, password })
+            const result = await authApi.register({ fullName, email, password })
             authSession.setPendingEmail(email)
+            if (result.demoOtp) {
+                authSession.setPendingDemoOtp(result.demoOtp)
+            }
             navigate({ to: '/otp' })
         } catch (err) {
             setError(err instanceof ApiError ? err.message : 'Registration failed.')

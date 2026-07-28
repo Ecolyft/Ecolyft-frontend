@@ -75,10 +75,13 @@ export const authApi = {
     phone?: string
     password: string
   }) {
-    return request<{ message: string; userId: string; email: string }>(
-      '/api/auth/register',
-      { method: 'POST', body: JSON.stringify(payload) }
-    )
+    return request<{
+      message: string
+      userId: string
+      email: string
+      demo?: boolean
+      demoOtp?: string
+    }>('/api/auth/register', { method: 'POST', body: JSON.stringify(payload) })
   },
 
   verifyOtp(payload: { email: string; otpCode: string }) {
@@ -93,10 +96,10 @@ export const authApi = {
   },
 
   resendOtp(payload: { email: string }) {
-    return request<{ message: string }>('/api/auth/resend-otp', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    })
+    return request<{ message: string; demo?: boolean; demoOtp?: string }>(
+      '/api/auth/resend-otp',
+      { method: 'POST', body: JSON.stringify(payload) }
+    )
   },
 
   forgotPassword(payload: { email: string }) {
