@@ -43,3 +43,6 @@ Thumbs.db
 # AI / tool artifacts
 .gemini/
 .vercel
+
+# Backend lives in separate repo (Ecolyft-backend)
+backend/

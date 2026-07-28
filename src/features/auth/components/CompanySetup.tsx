@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { Check, ChevronDown } from 'lucide-react'
+import { Check, ChevronDown, Loader2 } from 'lucide-react'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { useNavigate } from '@tanstack/react-router'
+import { entitiesApi, organisationsApi, ApiError } from '../../../lib/api'
+import type { FacilityWallet } from '../../../lib/types'
 
 function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -26,6 +28,9 @@ interface Step2Data {
     confirmZone: boolean
 }
 
+const formatNaira = (amount: number) =>
+    new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(amount)
+
 export const CompanySetup: React.FC = () => {
     const navigate = useNavigate()
     const [step, setStep] = useState(1)
@@ -39,6 +44,9 @@ export const CompanySetup: React.FC = () => {
     })
     const [rcError, setRcError] = useState(false)
     const [rcValid, setRcValid] = useState(false)
+    const [rcVerifying, setRcVerifying] = useState(false)
+    const [rcDemoMode, setRcDemoMode] = useState(false)
+    const [verifiedCompanyName, setVerifiedCompanyName] = useState('')
 
     const [step2, setStep2] = useState<Step2Data>({
         collectionZone: '',
@@ -47,9 +55,15 @@ export const CompanySetup: React.FC = () => {
         confirmMaterial: false,
         confirmZone: false,
     })
+    const [saving, setSaving] = useState(false)
+    const [setupComplete, setSetupComplete] = useState(false)
+    const [error, setError] = useState('')
+    const [wallet, setWallet] = useState<FacilityWallet | null>(null)
 
     const handleRcChange = (val: string) => {
         setStep1(s => ({ ...s, rcNumber: val }))
+        setVerifiedCompanyName('')
+        setRcDemoMode(false)
         if (val.length === 0) { setRcError(false); setRcValid(false) }
         else if (/^RC-\d{6}$/.test(val) || /^\d{6,7}$/.test(val)) {
             setRcError(false); setRcValid(true)
@@ -58,22 +72,103 @@ export const CompanySetup: React.FC = () => {
         }
     }
 
-    const handleStep1Continue = () => {
+    const verifyRcNumber = async () => {
+        if (!step1.rcNumber || rcError) return false
+
+        setRcVerifying(true)
+        setError('')
+        try {
+            const result = await entitiesApi.verifyBusiness(step1.rcNumber)
+            if (!result.success) {
+                setRcError(true)
+                setRcValid(false)
+                setError(result.message || 'RC verification failed.')
+                return false
+            }
+
+            setRcValid(true)
+            setRcError(false)
+            setRcDemoMode(Boolean(result.demo))
+            if (result.companyName) {
+                setVerifiedCompanyName(result.companyName)
+                if (!step1.businessName.trim()) {
+                    setStep1(s => ({ ...s, businessName: result.companyName! }))
+                }
+            }
+            if (result.address && !step1.location.trim()) {
+                setStep1(s => ({ ...s, location: result.address! }))
+            }
+            return true
+        } catch (err) {
+            setRcError(true)
+            setRcValid(false)
+            setError(err instanceof ApiError ? err.message : 'RC verification failed.')
+            return false
+        } finally {
+            setRcVerifying(false)
+        }
+    }
+
+    const handleStep1Continue = async () => {
         if (!step1.businessName || !step1.rcNumber || rcError) return
-        setStep(2)
+        const verified = await verifyRcNumber()
+        if (verified) setStep(2)
     }
 
     const handleStep2Continue = () => setStep(3)
 
-    const handleGoToDashboard = () => navigate({ to: '/dashboard' })
+    const handleGoToDashboard = async () => {
+        if (setupComplete) {
+            navigate({ to: '/dashboard' })
+            return
+        }
+
+        setError('')
+        setSaving(true)
+        try {
+            const result = await organisationsApi.setupCompany({
+                name: step1.businessName,
+                rcNumber: displayRc || step1.rcNumber,
+                location: step1.location,
+                businessType: step1.businessType,
+                creditProgrammeData: {
+                    collectionZone: step2.collectionZone,
+                    areaCode: step2.areaCode,
+                    baselinePeriod: step2.baselinePeriod,
+                    confirmMaterial: step2.confirmMaterial,
+                    confirmZone: step2.confirmZone,
+                    country: step1.country,
+                },
+            })
+            setWallet(result.wallet)
+            setSetupComplete(true)
+        } catch (err) {
+            setError(err instanceof ApiError ? err.message : 'Failed to save company setup.')
+        } finally {
+            setSaving(false)
+        }
+    }
 
     const displayRc = step1.rcNumber
         ? (/^RC-/.test(step1.rcNumber) ? step1.rcNumber : `RC-${step1.rcNumber}`)
         : ''
 
+    const walletStatusLabel = (status?: string) => {
+        switch (status) {
+            case 'ACTIVE': return 'Live account'
+            case 'MOCK': return 'Demo account'
+            case 'PENDING': return 'Provisioning'
+            case 'FAILED': return 'Failed'
+            default: return 'Unknown'
+        }
+    }
+
     return (
         <div className="flex items-start justify-center min-h-[calc(100vh-64px)] py-12 px-4">
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 w-full max-w-2xl p-10">
+                {error && (
+                    <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 mb-6">{error}</div>
+                )}
 
                 {/* Step 1 */}
                 {step === 1 && (
@@ -82,7 +177,6 @@ export const CompanySetup: React.FC = () => {
                         <p className="text-slate-500 text-sm mb-8">We will tailor EcoLyft to how you work</p>
 
                         <div className="grid grid-cols-2 gap-6 mb-6">
-                            {/* Business name */}
                             <div className="space-y-1.5">
                                 <label className="text-sm font-medium text-slate-700">Business name</label>
                                 <input
@@ -93,7 +187,6 @@ export const CompanySetup: React.FC = () => {
                                 />
                             </div>
 
-                            {/* RC number */}
                             <div className="space-y-1.5">
                                 <label className="text-sm font-medium text-slate-700">RC number</label>
                                 <div className="relative">
@@ -110,18 +203,26 @@ export const CompanySetup: React.FC = () => {
                                                     : "border-slate-200 focus:ring-brand-blue/20 focus:border-brand-blue"
                                         )}
                                     />
-                                    {rcValid && (
+                                    {rcVerifying && (
+                                        <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-brand-blue animate-spin" />
+                                    )}
+                                    {rcValid && !rcVerifying && (
                                         <div className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-brand-blue rounded-full flex items-center justify-center">
                                             <Check className="w-3.5 h-3.5 text-white" />
                                         </div>
                                     )}
                                 </div>
                                 {rcError && <p className="text-xs text-red-500">Invalid RC number</p>}
+                                {verifiedCompanyName && (
+                                    <p className="text-xs text-teal-600">
+                                        Verified: {verifiedCompanyName}
+                                        {rcDemoMode && ' (demo)'}
+                                    </p>
+                                )}
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-6 mb-8">
-                            {/* Location */}
                             <div className="space-y-1.5">
                                 <label className="text-sm font-medium text-slate-700">Location</label>
                                 <input
@@ -132,7 +233,6 @@ export const CompanySetup: React.FC = () => {
                                 />
                             </div>
 
-                            {/* Country dropdown */}
                             <div className="space-y-1.5">
                                 <label className="text-sm font-medium text-slate-700 opacity-0">Country</label>
                                 <div className="relative">
@@ -151,7 +251,6 @@ export const CompanySetup: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Business type */}
                         <div className="mb-8">
                             <label className="text-sm font-medium text-slate-700 block mb-3">What does your business do</label>
                             <div className="flex gap-4">
@@ -180,12 +279,14 @@ export const CompanySetup: React.FC = () => {
                             <div className="text-right">
                                 <button
                                     onClick={handleStep1Continue}
+                                    disabled={!step1.businessName || !step1.rcNumber || rcError || rcVerifying}
                                     className="bg-brand-blue text-white font-semibold px-10 py-3 rounded-lg hover:bg-brand-blue/90 transition-all disabled:opacity-50"
-                                    disabled={!step1.businessName || !step1.rcNumber || rcError}
                                 >
-                                    Continue
+                                    {rcVerifying ? 'Verifying RC...' : 'Continue'}
                                 </button>
-                                <p className="text-xs text-slate-400 mt-1.5">RC number is verified automatically when you continue</p>
+                                <p className="text-xs text-slate-400 mt-1.5">
+                                    RC number is verified via CAC registry (demo mode if Dojah keys are not set)
+                                </p>
                             </div>
                         </div>
                     </>
@@ -293,7 +394,7 @@ export const CompanySetup: React.FC = () => {
                             <span className="font-bold text-slate-800">{step1.businessName || 'your business'}</span>
                         </p>
 
-                        <table className="w-full mb-8 border border-slate-200 rounded-lg overflow-hidden">
+                        <table className="w-full mb-6 border border-slate-200 rounded-lg overflow-hidden">
                             <thead>
                                 <tr className="bg-slate-50">
                                     <th className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide px-4 py-3">Business</th>
@@ -310,11 +411,52 @@ export const CompanySetup: React.FC = () => {
                             </tbody>
                         </table>
 
+                        <div className="rounded-xl border border-teal-100 bg-teal-50/60 p-5 mb-8">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-teal-700 mb-2">
+                                Facility wallet (demo until Anchor access is approved)
+                            </p>
+                            <p className="text-sm text-slate-600 mb-3">
+                                A virtual collection account is created when you finish setup. Buyers pay into this account; EcoLyft credits your wallet after settlement.
+                            </p>
+                            {wallet ? (
+                                <div className="grid grid-cols-2 gap-3 text-sm">
+                                    <div>
+                                        <p className="text-slate-500 text-xs">Account name</p>
+                                        <p className="font-medium text-slate-800">{wallet.accountName || '—'}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-slate-500 text-xs">Status</p>
+                                        <p className="font-medium text-slate-800">{walletStatusLabel(wallet.provisioningStatus)}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-slate-500 text-xs">Account number</p>
+                                        <p className="font-medium text-slate-800">{wallet.accountNumber || 'Pending'}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-slate-500 text-xs">Bank</p>
+                                        <p className="font-medium text-slate-800">{wallet.bankName || '—'}</p>
+                                    </div>
+                                </div>
+                            ) : (
+                                <p className="text-sm text-slate-500">Wallet will be provisioned when you save.</p>
+                            )}
+                            {wallet && (
+                                <p className="text-xs text-slate-500 mt-3">
+                                    Balance: {formatNaira(wallet.balance)}
+                                </p>
+                            )}
+                        </div>
+
                         <button
                             onClick={handleGoToDashboard}
-                            className="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-4 rounded-lg transition-all"
+                            disabled={saving}
+                            className="w-full bg-teal-500 hover:bg-teal-600 disabled:opacity-60 text-white font-bold py-4 rounded-lg transition-all"
                         >
-                            Go To Dashboard
+                            {saving
+                                ? 'Saving & provisioning wallet...'
+                                : setupComplete
+                                    ? 'Continue To Dashboard'
+                                    : 'Provision Wallet & Finish'}
                         </button>
                     </>
                 )}

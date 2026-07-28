@@ -3,9 +3,11 @@ import {
     Bell,
     Menu,
     ChevronLeft,
+    LogOut,
 } from 'lucide-react'
-import { Link, useRouterState } from '@tanstack/react-router'
+import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 import { Sidebar, navItems } from './Sidebar'
+import { authSession } from '../../../lib/authSession'
 
 interface DashboardLayoutProps {
     children?: React.ReactNode
@@ -14,10 +16,20 @@ interface DashboardLayoutProps {
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const { location } = useRouterState()
+    const navigate = useNavigate()
     const currentPath = location.pathname
+    const user = authSession.getUser()
 
-    // Define root paths where the back button should NOT show
+    const initials = user?.fullName
+        ? user.fullName.split(' ').map(part => part[0]).join('').slice(0, 2).toUpperCase()
+        : 'EL'
+
     const isRootPath = navItems.some(item => item.to === currentPath) || currentPath === '/'
+
+    const handleLogout = () => {
+        authSession.clearSession()
+        navigate({ to: '/login' })
+    }
 
     return (
         <div className="h-screen bg-slate-100 flex flex-col overflow-hidden">
@@ -46,12 +58,19 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                     </Link>
                     <div className="flex items-center gap-3 pl-2 border-l border-slate-100">
                         <div className="text-right hidden xs:block">
-                            <p className="text-sm font-bold text-slate-800 leading-tight">Adam Shona</p>
-                            <p className="text-[10px] md:text-xs text-brand-blue font-medium leading-tight">GreenCycle Limited</p>
+                            <p className="text-sm font-bold text-slate-800 leading-tight">{user?.fullName || 'EcoLyft User'}</p>
+                            <p className="text-[10px] md:text-xs text-brand-blue font-medium leading-tight">{user?.email || 'Signed in'}</p>
                         </div>
                         <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-brand-blue font-bold text-xs border border-blue-200">
-                            AS
+                            {initials}
                         </div>
+                        <button
+                            onClick={handleLogout}
+                            className="hidden md:flex p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors"
+                            title="Sign out"
+                        >
+                            <LogOut className="w-4 h-4" />
+                        </button>
                     </div>
                 </div>
             </header>

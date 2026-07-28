@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { 
     AlertTriangle, 
     Plus, 
@@ -10,6 +10,8 @@ import {
     CheckCircle2
 } from 'lucide-react'
 import { Link, useNavigate } from '@tanstack/react-router'
+import { analyticsApi, organisationsApi } from '../../../lib/api'
+import type { FacilityWallet } from '../../../lib/types'
 
 const plRows = [
     { color: 'bg-[#4285F4]', material: 'PET Clear', cost: '₦450,000', revenue: '₦780,000', profit: '₦330,000', margin: '42.3%', marginClass: 'bg-[#EBF5FF] text-[#4285F4]' },
@@ -71,6 +73,25 @@ const buyers = [
 
 export const MoneyScreen: React.FC = () => {
     const navigate = useNavigate()
+    const [stockOnHand, setStockOnHand] = useState<number | null>(null)
+    const [todaysMargin, setTodaysMargin] = useState<number | null>(null)
+    const [wallet, setWallet] = useState<FacilityWallet | null>(null)
+
+    useEffect(() => {
+        analyticsApi.getDashboard()
+            .then(res => {
+                setStockOnHand(res.dashboard.stockOnHand)
+                setTodaysMargin(res.dashboard.todaysMargin)
+            })
+            .catch(() => {
+                // Keep rich dashboard mock sections when analytics is empty or unavailable
+            })
+
+        organisationsApi.getCurrent()
+            .then(res => setWallet(res.wallet))
+            .catch(() => {})
+    }, [])
+
     return (
         <div className="w-full max-w-7xl mx-auto space-y-6 pb-12">
             {/* Header Actions */}
@@ -98,12 +119,41 @@ export const MoneyScreen: React.FC = () => {
                 </button>
             </div>
 
+            {wallet && (
+                <div className="rounded-2xl border border-teal-100 bg-gradient-to-r from-teal-50 to-white p-5 flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <p className="text-[11px] font-bold uppercase tracking-widest text-teal-700 mb-1">
+                            Facility wallet {wallet.provisioningStatus === 'MOCK' ? '(demo)' : ''}
+                        </p>
+                        <p className="text-sm text-slate-600">
+                            {wallet.accountName || 'EcoLyft facility account'}
+                            {wallet.accountNumber ? ` • ${wallet.accountNumber}` : ''}
+                            {wallet.bankName ? ` • ${wallet.bankName}` : ''}
+                        </p>
+                    </div>
+                    <div className="text-right">
+                        <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Balance</p>
+                        <p className="text-2xl font-black text-brand-blue">₦{Math.round(wallet.balance).toLocaleString()}</p>
+                    </div>
+                </div>
+            )}
+
             {/* KPI row */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <KpiCard label="INBOUND (30D)" value="8,720 kg" sub="+18% vs last month" subColor="text-emerald-500" />
+                <KpiCard
+                    label="STOCK ON HAND"
+                    value={stockOnHand !== null ? `${stockOnHand.toLocaleString()} kg` : '—'}
+                    sub="Live from operations ledger"
+                    subColor="text-emerald-500"
+                />
                 <KpiCard label="AVERAGE YIELD" value="87.3%" sub="+2.1% increase" subColor="text-emerald-500" />
                 <KpiCard label="OUTBOUND (30D)" value="6,450 kg" sub="-18% vs last month" subColor="text-rose-500" />
-                <KpiCard label="REVENUE" value="₦1,921,475" sub="+23% vs last month" subColor="text-emerald-500" />
+                <KpiCard
+                    label="TODAY'S MARGIN"
+                    value={todaysMargin !== null ? `₦${Math.round(todaysMargin).toLocaleString()}` : '—'}
+                    sub="Live from operations ledger"
+                    subColor={todaysMargin !== null && todaysMargin >= 0 ? 'text-emerald-500' : 'text-rose-500'}
+                />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Search, ChevronDown, ChevronLeft, ChevronRight, Filter, Clock, Hourglass, GitBranch, Calendar, TrendingUp, TrendingDown, Download, FileText, AlertTriangle, CheckCircle2, Beaker, Ban } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
+import { operationsApi } from '../../../lib/api'
+import type { Batch } from '../../../lib/types'
 
 type TabType = 'Inbound' | 'Processing' | 'Outbound' | 'Flagged'
 type ViewState = 'list' | 'inbound_success' | 'outbound_success'
@@ -44,10 +46,43 @@ const FLAGGED_DATA = [
 export const BatchList: React.FC = () => {
     const [activeTab, setActiveTab] = useState<TabType>('Inbound')
     const [searchQuery, setSearchQuery] = useState('')
+    const [apiBatches, setApiBatches] = useState<Batch[]>([])
     
     const [viewState, setViewState] = useState<ViewState>('list')
     const [selectedInboundIds, setSelectedInboundIds] = useState<string[]>([])
     const [selectedProcessingIds, setSelectedProcessingIds] = useState<string[]>([])
+
+    useEffect(() => {
+        operationsApi.getBatches()
+            .then(res => setApiBatches(res.batches))
+            .catch(() => {})
+    }, [])
+
+    const inboundRows = apiBatches
+        .filter(batch => batch.status === 'INBOUND')
+        .map(batch => ({
+            id: batch.id,
+            label: batch.batchNumber,
+            supplier: 'Pending linkage',
+            date: new Date(batch.createdAt).toLocaleDateString(),
+            material: '—',
+            weight: '—',
+            price: '—',
+            status: 'Available',
+        }))
+
+    const inboundData = inboundRows.length > 0
+        ? inboundRows
+        : INBOUND_DATA.map(row => ({
+            id: row.id,
+            label: row.id,
+            supplier: row.supplier,
+            date: row.date,
+            material: row.material,
+            weight: row.weight,
+            price: row.price,
+            status: row.status,
+        }))
 
     const handleTabChange = (tab: TabType) => {
         setActiveTab(tab)
@@ -260,10 +295,10 @@ export const BatchList: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100 text-sm">
-                            {INBOUND_DATA.map((row, idx) => (
+                            {inboundData.map((row, idx) => (
                                 <tr key={`${row.id}-${idx}`} className="hover:bg-slate-50/50 transition-colors">
                                     <td className="p-4 font-bold text-brand-blue cursor-pointer pl-6">
-                                        <Link to="/batches/$batchId" params={{ batchId: row.id }} className="hover:underline">{row.id}</Link>
+                                        <Link to="/batches/$batchId" params={{ batchId: row.id }} className="hover:underline">{row.label}</Link>
                                     </td>
                                     <td className="p-4 font-medium text-slate-600">{row.supplier}</td>
                                     <td className="p-4 text-slate-500">{row.date}</td>

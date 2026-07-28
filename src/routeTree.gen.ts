@@ -24,6 +24,7 @@ import { Route as LogProcessingRouteImport } from './routes/log-processing'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CreateNewPasswordRouteImport } from './routes/create-new-password'
 import { Route as CollectorsRouteImport } from './routes/collectors'
+import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as BuyersRouteImport } from './routes/buyers'
 import { Route as BatchesRouteImport } from './routes/batches'
 import { Route as AlertsRouteImport } from './routes/alerts'
@@ -31,6 +32,7 @@ import { Route as AcceptInviteRouteImport } from './routes/accept-invite'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as LogSaleSuccessRouteImport } from './routes/log-sale.success'
+import { Route as LogPurchaseSuccessRouteImport } from './routes/log-purchase.success'
 import { Route as CollectorsNewRouteImport } from './routes/collectors.new'
 import { Route as CollectorsCollectorIdRouteImport } from './routes/collectors.$collectorId'
 import { Route as BuyersNewRouteImport } from './routes/buyers.new'
@@ -115,6 +117,11 @@ const CollectorsRoute = CollectorsRouteImport.update({
   path: '/collectors',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BuyersRoute = BuyersRouteImport.update({
   id: '/buyers',
   path: '/buyers',
@@ -149,6 +156,11 @@ const LogSaleSuccessRoute = LogSaleSuccessRouteImport.update({
   id: '/success',
   path: '/success',
   getParentRoute: () => LogSaleRoute,
+} as any)
+const LogPurchaseSuccessRoute = LogPurchaseSuccessRouteImport.update({
+  id: '/success',
+  path: '/success',
+  getParentRoute: () => LogPurchaseRoute,
 } as any)
 const CollectorsNewRoute = CollectorsNewRouteImport.update({
   id: '/new',
@@ -197,11 +209,12 @@ export interface FileRoutesByFullPath {
   '/alerts': typeof AlertsRoute
   '/batches': typeof BatchesRouteWithChildren
   '/buyers': typeof BuyersRouteWithChildren
+  '/checkout': typeof CheckoutRoute
   '/collectors': typeof CollectorsRouteWithChildren
   '/create-new-password': typeof CreateNewPasswordRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/log-processing': typeof LogProcessingRoute
-  '/log-purchase': typeof LogPurchaseRoute
+  '/log-purchase': typeof LogPurchaseRouteWithChildren
   '/log-sale': typeof LogSaleRouteWithChildren
   '/login': typeof LoginRoute
   '/otp': typeof OtpRoute
@@ -220,6 +233,7 @@ export interface FileRoutesByFullPath {
   '/buyers/new': typeof BuyersNewRoute
   '/collectors/$collectorId': typeof CollectorsCollectorIdRoute
   '/collectors/new': typeof CollectorsNewRoute
+  '/log-purchase/success': typeof LogPurchaseSuccessRoute
   '/log-sale/success': typeof LogSaleSuccessRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -229,10 +243,11 @@ export interface FileRoutesByTo {
   '/alerts': typeof AlertsRoute
   '/batches': typeof BatchesRouteWithChildren
   '/buyers': typeof BuyersRouteWithChildren
+  '/checkout': typeof CheckoutRoute
   '/collectors': typeof CollectorsRouteWithChildren
   '/create-new-password': typeof CreateNewPasswordRoute
   '/log-processing': typeof LogProcessingRoute
-  '/log-purchase': typeof LogPurchaseRoute
+  '/log-purchase': typeof LogPurchaseRouteWithChildren
   '/log-sale': typeof LogSaleRouteWithChildren
   '/login': typeof LoginRoute
   '/otp': typeof OtpRoute
@@ -251,6 +266,7 @@ export interface FileRoutesByTo {
   '/buyers/new': typeof BuyersNewRoute
   '/collectors/$collectorId': typeof CollectorsCollectorIdRoute
   '/collectors/new': typeof CollectorsNewRoute
+  '/log-purchase/success': typeof LogPurchaseSuccessRoute
   '/log-sale/success': typeof LogSaleSuccessRoute
   '/dashboard': typeof DashboardIndexRoute
 }
@@ -261,11 +277,12 @@ export interface FileRoutesById {
   '/alerts': typeof AlertsRoute
   '/batches': typeof BatchesRouteWithChildren
   '/buyers': typeof BuyersRouteWithChildren
+  '/checkout': typeof CheckoutRoute
   '/collectors': typeof CollectorsRouteWithChildren
   '/create-new-password': typeof CreateNewPasswordRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/log-processing': typeof LogProcessingRoute
-  '/log-purchase': typeof LogPurchaseRoute
+  '/log-purchase': typeof LogPurchaseRouteWithChildren
   '/log-sale': typeof LogSaleRouteWithChildren
   '/login': typeof LoginRoute
   '/otp': typeof OtpRoute
@@ -284,6 +301,7 @@ export interface FileRoutesById {
   '/buyers/new': typeof BuyersNewRoute
   '/collectors/$collectorId': typeof CollectorsCollectorIdRoute
   '/collectors/new': typeof CollectorsNewRoute
+  '/log-purchase/success': typeof LogPurchaseSuccessRoute
   '/log-sale/success': typeof LogSaleSuccessRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -295,6 +313,7 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/batches'
     | '/buyers'
+    | '/checkout'
     | '/collectors'
     | '/create-new-password'
     | '/dashboard'
@@ -318,6 +337,7 @@ export interface FileRouteTypes {
     | '/buyers/new'
     | '/collectors/$collectorId'
     | '/collectors/new'
+    | '/log-purchase/success'
     | '/log-sale/success'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
@@ -327,6 +347,7 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/batches'
     | '/buyers'
+    | '/checkout'
     | '/collectors'
     | '/create-new-password'
     | '/log-processing'
@@ -349,6 +370,7 @@ export interface FileRouteTypes {
     | '/buyers/new'
     | '/collectors/$collectorId'
     | '/collectors/new'
+    | '/log-purchase/success'
     | '/log-sale/success'
     | '/dashboard'
   id:
@@ -358,6 +380,7 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/batches'
     | '/buyers'
+    | '/checkout'
     | '/collectors'
     | '/create-new-password'
     | '/dashboard'
@@ -381,6 +404,7 @@ export interface FileRouteTypes {
     | '/buyers/new'
     | '/collectors/$collectorId'
     | '/collectors/new'
+    | '/log-purchase/success'
     | '/log-sale/success'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
@@ -391,11 +415,12 @@ export interface RootRouteChildren {
   AlertsRoute: typeof AlertsRoute
   BatchesRoute: typeof BatchesRouteWithChildren
   BuyersRoute: typeof BuyersRouteWithChildren
+  CheckoutRoute: typeof CheckoutRoute
   CollectorsRoute: typeof CollectorsRouteWithChildren
   CreateNewPasswordRoute: typeof CreateNewPasswordRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   LogProcessingRoute: typeof LogProcessingRoute
-  LogPurchaseRoute: typeof LogPurchaseRoute
+  LogPurchaseRoute: typeof LogPurchaseRouteWithChildren
   LogSaleRoute: typeof LogSaleRouteWithChildren
   LoginRoute: typeof LoginRoute
   OtpRoute: typeof OtpRoute
@@ -515,6 +540,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollectorsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/buyers': {
       id: '/buyers'
       path: '/buyers'
@@ -563,6 +595,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/log-sale/success'
       preLoaderRoute: typeof LogSaleSuccessRouteImport
       parentRoute: typeof LogSaleRoute
+    }
+    '/log-purchase/success': {
+      id: '/log-purchase/success'
+      path: '/success'
+      fullPath: '/log-purchase/success'
+      preLoaderRoute: typeof LogPurchaseSuccessRouteImport
+      parentRoute: typeof LogPurchaseRoute
     }
     '/collectors/new': {
       id: '/collectors/new'
@@ -679,6 +718,18 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
   DashboardRouteChildren,
 )
 
+interface LogPurchaseRouteChildren {
+  LogPurchaseSuccessRoute: typeof LogPurchaseSuccessRoute
+}
+
+const LogPurchaseRouteChildren: LogPurchaseRouteChildren = {
+  LogPurchaseSuccessRoute: LogPurchaseSuccessRoute,
+}
+
+const LogPurchaseRouteWithChildren = LogPurchaseRoute._addFileChildren(
+  LogPurchaseRouteChildren,
+)
+
 interface LogSaleRouteChildren {
   LogSaleSuccessRoute: typeof LogSaleSuccessRoute
 }
@@ -696,11 +747,12 @@ const rootRouteChildren: RootRouteChildren = {
   AlertsRoute: AlertsRoute,
   BatchesRoute: BatchesRouteWithChildren,
   BuyersRoute: BuyersRouteWithChildren,
+  CheckoutRoute: CheckoutRoute,
   CollectorsRoute: CollectorsRouteWithChildren,
   CreateNewPasswordRoute: CreateNewPasswordRoute,
   DashboardRoute: DashboardRouteWithChildren,
   LogProcessingRoute: LogProcessingRoute,
-  LogPurchaseRoute: LogPurchaseRoute,
+  LogPurchaseRoute: LogPurchaseRouteWithChildren,
   LogSaleRoute: LogSaleRouteWithChildren,
   LoginRoute: LoginRoute,
   OtpRoute: OtpRoute,
