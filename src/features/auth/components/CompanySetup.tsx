@@ -285,7 +285,7 @@ export const CompanySetup: React.FC = () => {
                                     {rcVerifying ? 'Verifying RC...' : 'Continue'}
                                 </button>
                                 <p className="text-xs text-slate-400 mt-1.5">
-                                    RC number is verified via CAC registry (demo mode if Dojah keys are not set)
+                                    RC number is verified via official CAC VAS registry (demo mode if API key is not set)
                                 </p>
                             </div>
                         </div>
